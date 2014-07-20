@@ -14,11 +14,7 @@
             var clickable=0;
 			var isvalid=true;
 			var check_lia=0;
-			var test_limit=0;
-			var test_debt=0;
-			var short_li;
-			var long_li;
-			var test;
+			var tressury=0;
 			
             $(document).ready(function(){
 				
@@ -45,9 +41,12 @@
                     data: {type:"set"},
                     success: function(str){
                         row=str.split("|");
-                       // alert(str);
-						test_limit=parseInt(row[12]);
-						var test_candebt=test_limit*0.8;
+                        //alert(str);
+						
+						now_can_debt=parseInt(row[12]);
+						document.getElementById("can_loan").innerHTML=addCommas(now_can_debt);
+						document.getElementById("buyable_stock").innerHTML=addCommas(price06);
+						
                        	now_cumlia=parseInt(row[0]);
                         sto_now=parseInt(row[9]);
                         price06=parseInt(row[10]);
@@ -61,8 +60,7 @@
                         document.getElementById("ref_stockp").innerHTML=parseFloat(row[2]);
 						document.getElementById("outside_stock").innerHTML=addCommas(price06);
 						
-						document.getElementById("buyable_stock").innerHTML=row[12];		
-						document.getElementById("candebt").innerHTML=test_candebt;		
+						
 						
                         if(row[3]!="")
                             document.getElementById("get_fundraise").innerHTML=parseFloat(row[3]);
@@ -146,41 +144,27 @@
                 $("#submit").click(function(){
 					var get_cash1=parseInt(document.getElementById("get_fundraise").innerHTML.replace(/\,/g,''));
 					var get_cash2=parseFloat(document.getElementById("give_dividends").innerHTML);
-					var shortlia=document.getElementById("get_shortlia").value;
-					var longlia=document.getElementById("get_longlia").value;
+					var short=document.getElementById("get_shortlia").value;
+					var long=document.getElementById("get_longlia").value;
 					var cumlia=parseInt(document.getElementById("cum_lia").innerHTML.replace(/\,/g,''));
 					var payback=document.getElementById("payback_longlia").value;
 					//var canbuy=parseInt(document.getElementById("buyable_stock").innerHTML.replace(/\,/g,''));
-					//var buystock=document.getElementById("buyback_stock").value;
-					//alert(test_limit);
-					var test =document.getElementById("candebt").value;
-					
-					test=test_limit*0.8;
-					alert(test);
-					short_li=parseInt(shortlia);
-					long_li=parseInt(longlia);
-					//alert(long_li);
-					//alert(short_li);
-					var fr=new Array(get_cash1,get_cash2,short_li,long_li,payback,test);
+					var buystock=document.getElementById("buyback_stock").value;
+					var fr=new Array(get_cash1,get_cash2,short,long,payback,buystock);
 					
 					
 					for(var i=0; i<fr.length; i++){
 						if(fr[i]==""){
-							
 							fr[i]=0;
+							//alert(fr[i]);
 						}
+						if(i==4)
+							isvalid=checkpb(fr[i],cumlia);
+						//else if(i==5)
+							//isvalid=checkbs(fr[i],canbuy);
+						else			
+						    isvalid=check(fr[i]);
 						
-						
-						if(test>short_li)
-							isvalid=true;
-						else 
-							isvalid=false;
-
-						if(test>long_li)
-							isvalid=true;
-						else 
-							isvalid=false;										
-
 						if(isvalid==false){
 							alert("請確認購買數量在有效範圍內(>0)!");
 							break;
@@ -195,7 +179,7 @@
                         	 data: {type:"update",decision1:fr[2],decision2:fr[3],decision3:fr[4],
 											      decision4:fr[0],decision5:fr[1],decision6:fr[5]},
                        		 success: function(str){
-								 alert(str);
+								 //alert(str);
                            		 alert("Success!");
 								 location.href=('./fund_raising.php');
 								 //journal();
@@ -205,21 +189,7 @@
                 });
   
 	}); // end ready func
-	function checklonglia(num,longliabi)
-	{
-		if(num>=0 && num>=longliabi)
-			return true;
-		else 
-			return false;
-	}
-	function chechshortlia(num,shortliabi)
-	{
-		if(num>=0 && num>=shortliabi)
-			return true;
-		else 
-			return false;
-	}
-		
+	
 	 function checkpb(num,cumlia){
 		if(num>=0 && num<=cumlia)
    			return true;
@@ -339,10 +309,11 @@
                 </tr> 
             </thead>
             <tbody>
+			
                 <tr>
                     <th scope="row" style="height:45px">本月短期借款</th>
                     <td><input id="get_shortlia" size="8px" onBlur="check_2()" style="text-align:right"></td>
-                    <td rowspan="4" style="text-align:left">說明：<br>
+                    <td rowspan="5" style="text-align:left">說明：<br>
                    1. 長短期年利率： 2%,4%<br> 
                    2. 還款期限   <br>
    &nbsp;&nbsp;&nbsp; 短期借款： 6個月內<br>
@@ -354,6 +325,10 @@
                     <th scope="row" style="height:45px">本月長期借款</th>
                     <td><input id="get_longlia" size="8px" onBlur="check_2()" style="text-align:right"></td>
                 </tr>
+				<tr>
+					<th scope="row" style="height:45px">可借貸上限</th>
+					<td style="text-align:center"><span id="can_loan"></span></td>
+				</tr>
                 <tr>
                     <th scope="row" style="height:45px">累積長期借款</th>
                     <td style="text-align:center"><span id="cum_lia">0</span></td>
@@ -383,13 +358,17 @@
                     <td><span id="outside_stock"></span></td>
                 </tr>
                 <tr>
-                    <th scope="row" style="height:45px">目前資產總額</th>
+                    <th scope="row" style="height:45px">庫藏股</th>
                     <td><span id="buyable_stock"></span></td>
                 </tr>
                 <tr>
-                    <th scope="row" style="height:45px">可供借款上限</th>
-                    <td><span id="candebt"></span></td>
+                    <th scope="row" style="height:45px">買回庫藏股</th>
+                    <td><input id="buyback_stock" size="8px" style="text-align:right"></td>
                 </tr>
+				<tr>
+					<th scope="row" style="height:45px">賣出庫藏股</th>
+					<td><input id="sell_stock" size="8px" style="text-align:right"></td>
+				</tr>
               </tbody>
               
             </table>
