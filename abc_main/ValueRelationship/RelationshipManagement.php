@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
         <title></title>
@@ -1318,7 +1318,7 @@
                  <table class="table1" width="60%">
                 <thead>
                 	<tr>
-                    	<td>供應商分紅</td>
+                    	<td>供應商回扣</td>
                     </tr>
                     <tr>
 					    <th width="18%"></th>
