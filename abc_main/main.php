@@ -1,5 +1,4 @@
-﻿ 
-<?php session_start();?>
+﻿<?php session_start();?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -29,7 +28,7 @@
 	$_SESSION['month']=$month;
 	
 	//error_reporting(0);
-	if($month==1&$year==1)
+if($month==1&$year==1)
 	{
 	$temp = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`='$year' AND `month`='$month'");
     $money = mysql_fetch_array($temp);
@@ -55,7 +54,6 @@
 		$cash = $money[0];
 		}
 	}
-
 
 	//echo $year."|".$month."|".$cid;
 	mysql_select_db("testabc_login"); //get cid
@@ -159,20 +157,18 @@ $(function(){
 				var roundEndTime=<?php echo $endtime; ?>;
 				//此回合剩餘秒數
 				var TimeLeft=(roundEndTime*1000-(new Date().getTime()))/1000;
-				
 				if(TimeLeft>0){
-					var hour = Math.floor((TimeLeft/3600));
+
+			var hour = Math.floor((TimeLeft/3600));
 			document.getElementById("lefttime").innerHTML = hour + ' 時  \t'+ Math.floor((TimeLeft%3600)/60)+' 分  \t'+' '+Math.floor(TimeLeft%60)+' 秒';
 			setTimeout("clock()",1000);
 					
 			    }
 			else{
-					//alert(TimeLeft);
-					//window.location.replace("./main2.php");
-					location.href="./main2.php";		
-					//setTimeout(location.href="./main.php",4000);
-
-				}
+					location.href="./main2.php";
+					//location.href="./main.php";					
+					
+}
 
 			
 			}
@@ -183,6 +179,7 @@ $(function(){
 //   		alert(dnum+":"+order);
 			var dec="<?php echo $decision[0];?>";
 			var d=dec.split(",");
+			
 			
 			for(var i=0;i< d.length;i++){
 				
@@ -250,6 +247,16 @@ $(function(){
 					else if(order==5)
 						document.getElementById('contentiframe').src='./ValueRelationship/RelationshipManagement.php?select_tab=5';
 				}
+
+				// -----------------7/23
+				else if (dnum==21){
+				
+				document.getElementById('contentiframe').src='./SystemIfo/Info.php';	
+				}
+				
+				
+				
+				// ----------------7/23
 						
 				//end 判斷dnum
 															
@@ -626,6 +633,13 @@ $(function(){
     </ul>
   </li>-->
 </ul>
+
+ <li><a href="#" target="_self">系統資訊</a>
+    <ul id="subMgm" class="second-menu">
+      	<li><a href="#" onclick="check_authority(7,0)">系統資訊</a></li>
+    </ul>
+ </li>
+
 </div>
 
 <div id="blank" align="center">
