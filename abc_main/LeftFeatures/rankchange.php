@@ -315,12 +315,9 @@
     $comp = mysql_fetch_array($cid);
 	mysql_select_db("testabc_main");
 	//echo $c[$i];
-	
 	//所以積分先進行計算
 
 	if($_GET['nowPage']){$pages=$_GET['nowPage'];}else{$pages=1;}
-	
- 
 
 	for($i=1;$i<=$length;$i++){
 	//while($comp_ID=mysql_fetch_array($cid)){
@@ -329,46 +326,39 @@
 		$result=mysql_query("SELECT	SUM(`bankrupt`) FROM `cash` WHERE `cid`='C0".$i."' AND `year`=$pages");
 		$temp = mysql_fetch_array($result);
 		//echo $temp[0];
-		$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*10);
+		$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*100);
 		//echo $score_average[0];
 		//$i++;
 	//}
 	}
 	
-
 	$flag=0;
 	for($i=1;$i<=$length;$i++){
-	//while($company=mysql_fetch_array($C_name)){//每間公司名稱
 		if ($flag % 2 == 1)
 		  echo "<tr class='odd' height='50'>";
 		else
 		  echo "<tr height=50>";
 		  
-	//加權平均得分數
-			
-			echo "<td>".number_format($score_average[$i],2)."</td>";
+			//加權平均得分數
+			echo "<td>".number_format($score_average[$i],1)."</td>";
 		    
-	//競賽名次
-		
+			//競賽名次
 			for($j=1,$rank[$i]=1;$j<=$length;$j++){
 				if($score_average[$i]>$score_average[$j]){
-					//$rank[$i]--;
 				}
 				elseif($score_average[$i]<$score_average[$j])
 					$rank[$i]++;
 			}
-			//$rank[$i]++;
 			echo "<td>".$rank[$i]."</td>";
 			
-	//競賽錦標
-		
+			//競賽錦標
 			if($rank[$i]==1)
 				echo "<td><img width='25px' height='25px' src='../images/Crown.png'>冠軍</td>";
 			elseif($rank[$i]==2)
 				echo "<td><img width='25px' height='25px' src='../images/Crown1.png'>亞軍</td>";
 			elseif($rank[$i]==3)
 				echo "<td><img width='25px' height='25px' src='../images/Crown2.png'>季軍</td>";
-			else echo "<td></td>";
+			else echo "<td style='color:#FF0000;'>請加油!</td>";
 	$flag++;
 	echo "</tr>";
 }
@@ -377,6 +367,7 @@
 </table>
 <?php
 if ($year!=1){
+	echo "<h2 style='color:#008844;'>  ＊ 請注意：倒閉將會倒扣當年積分100分唷!<h2>";
 	$temp=mysql_query("SELECT MAX(`year`) FROM `state`");
     $result_temp=mysql_fetch_array($temp);
     $year=$result_temp[0];
@@ -395,6 +386,7 @@ if ($year!=1){
 else{
 	echo "<h2 style='color:#FF0000;'>需期滿一年才能產生競賽排名! </h2>";
 	}
+
 ?>
 </body> 
 </html>
