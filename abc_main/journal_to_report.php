@@ -1059,7 +1059,7 @@ function jtp(){
 					
 						$temp=mysql_query("SELECT price FROM equity WHERE `name`='35' AND `month`=$round_now AND `cid`='$cid'",$connect);
 						$temp_result=mysql_fetch_array($temp);
-						mysql_query("UPDATE `equity` SET `price`=$temp_result[0]-$sum WHERE `name`='35' AND `month`=$round_now AND `cid`='$cid'",$connect);
+						mysql_query("UPDATE `equity` SET `price`=$temp_result[0]+$sum WHERE `name`='35' AND `month`=$round_now AND `cid`='$cid'",$connect);
 						
 						mysql_query("UPDATE `financing_netin` SET `price`=$sum*(-1) WHERE `name`='dividend' AND `month`=$round_now AND `cid`='$cid'",$connect);
 					}
