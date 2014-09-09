@@ -126,45 +126,16 @@ and open the template in the editor.
 		
 	echo "<tr align='center' class='odd'><td>營業利潤率</td>";//多於兩項就一間間來，這樣query次數應該會比較少
 		$i=1;
-		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
-		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
-		mysql_select_db("testabc_main",$connect);
-		while($company=mysql_fetch_array($C_name)){//每間公司名稱
-			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `operating_expenses` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
-			$temp=mysql_fetch_array($result);
-			$OE[$i]=$temp['price']*(-1);
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_revenue` WHERE `name` = '522' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]=$temp['price'];
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_revenue` WHERE `name` = '523' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price'];
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_expenses` WHERE `name` = '7' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price']*(-1);
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_expenses` WHERE `name` = '521' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price']*(-1);
+		$result = mysql_query("SELECT * FROM `production_cost` WHERE `year`=$year AND `month`=$month ORDER BY `cid` ASC", $connect);
+		while($temp=mysql_fetch_array($result)){  //產品A直接原料+產品B直接原料+產品A直接人工+產品B直接人工+產品A製造費用+產品B製造費用
+			$price[$i]=$temp['product_A_material_total']+$temp['product_B_material_total']+$temp['product_A_direct_labor']+$temp['product_B_direct_labor']+$temp['product_A_overhead']+$temp['product_A_overhead'];  
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
 			if($sales_income[$i]==0)//避免分母為零
 				echo "<td>-</td>";
 			else{
-				$print[$i]=($price[$i]+$OE[$i])/$sales_income[$i]*100;
+				$print[$i]=($price[$i])/$sales_income[$i]*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
 			}
 		}
@@ -252,6 +223,17 @@ and open the template in the editor.
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
 	echo "<tr align='center' class='odd'><td>營業費用佔營收百分比</td>";
+		$i=1;
+		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
+		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
+		mysql_select_db("testabc_main",$connect);
+		while($company=mysql_fetch_array($C_name)){//每間公司名稱
+			$CN=$company['CompanyID'];
+			$result = mysql_query("SELECT SUM(price) FROM `operating_expenses` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
+			$temp=mysql_fetch_array($result);
+			$OE[$i]=$temp[0]*(-1);
+			$i++;
+		}
 		for($i=1;$i<=$length;$i++){
 			if($sales_income[$i]==0)//避免分母為零
 				echo "<td>-</td>";
@@ -320,22 +302,12 @@ and open the template in the editor.
 		mysql_select_db("testabc_main",$connect);
 		while($company=mysql_fetch_array($C_name)){//每間公司名稱
 			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `fixed_assets` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
+			$result = mysql_query("SELECT SUM(price) FROM `equity` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
 			$temp=mysql_fetch_array($result);
-			$price[$i]=$temp['price'];//固定資產
+			$price[$i]=$temp[0];//股東權益
 			$i++;
 		}
-		$i=1;
-		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
-		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
-		mysql_select_db("testabc_main",$connect);
-		while($company=mysql_fetch_array($C_name)){//每間公司名稱
-			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `current_assets` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
-			$temp=mysql_fetch_array($result);
-			$price[$i]+=$temp['price'];//+流動資產
-			$i++;
-		}
+		
 		for($i=1;$i<=$length;$i++){
 			if($price[$i]==0)//避免分母為零
 				echo "<td>-</td>";
@@ -360,6 +332,12 @@ and open the template in the editor.
 			$i++;
 		}
 		$i=1;
+		$result = mysql_query("SELECT * FROM `current_assets` WHERE `name` = '111' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
+		while($temp=mysql_fetch_array($result)){
+			$price[$i]+=$temp['price'];//+現金
+			$i++;
+		}
+		$i=1;
 		$result = mysql_query("SELECT * FROM `current_liabilities` WHERE `name` = '213215' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
 			$price[$i]-=$temp['price'];//-應付
@@ -378,11 +356,9 @@ and open the template in the editor.
 	
 	echo "<tr align='center' class='odd'><td>現金佔營收百分比</td>";
 		$i=1;
-        if($month-1==0)
-			$result = mysql_query("SELECT * FROM `cash` WHERE `year` = $year-1 AND `month` = 12 ORDER BY `cid` ASC", $connect);
-        else $result = mysql_query("SELECT * FROM `cash` WHERE `year` = $year AND `month` = $month-1 ORDER BY `cid` ASC", $connect);
+		$result = mysql_query("SELECT * FROM `current_assets` WHERE `name` = '111' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
-			$price[$i]=$temp['price'];
+			$price[$i]=$temp['price'];//現金
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
@@ -531,8 +507,9 @@ and open the template in the editor.
 			if($sales_income[$i]+$sale['revenue']== 0){
 			   $sales_income[$i]=0;}
 			$print[$i]=$sales_income[$i]+$sale['revenue'];
-			echo "<td>".number_format($print[$i])."</td>";
-			mysql_query("UPDATE `dupont` SET revenue=".number_format($print[$i])." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
+			echo "<td>".number_format($print[$i])."</td>";	
+				
+			mysql_query("UPDATE `dupont` SET `revenue`=$print[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length)."</td>"; //同業平均
 	
@@ -545,8 +522,10 @@ and open the template in the editor.
 			$result1 = mysql_query($sql_lastyear);
 			$now = mysql_fetch_row($result);
 			$lastyear = mysql_fetch_row($result1);
-			if($year==1)
+			if($year==1){
+				$print[$i]=0;
 				echo "<td>-</td>";
+			}
 			else
 			{
 				if($lastyear[$i-1]==0||$now[$i-1]==0){//避免分母為零
@@ -563,54 +542,28 @@ and open the template in the editor.
 		
 	echo "<tr align='center' class='odd'><td>營業利潤率</td>";//多於兩項就一間間來，這樣query次數應該會比較少
 		$i=1;
-		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
-		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
-		mysql_select_db("testabc_main",$connect);
-		while($company=mysql_fetch_array($C_name)){//每間公司名稱
-			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `operating_expenses` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
-			$temp=mysql_fetch_array($result);
-			$OE[$i]=$temp['price']*(-1);
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_revenue` WHERE `name` = '522' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]=$temp['price'];
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_revenue` WHERE `name` = '523' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price'];
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_expenses` WHERE `name` = '7' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price']*(-1);
-			$i++;
-		}
-		$i=1;
-		$result = mysql_query("SELECT * FROM `other_expenses` WHERE `name` = '521' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
-		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price']*(-1);
+		$result = mysql_query("SELECT * FROM `production_cost` WHERE `year`=$year AND `month`=$month ORDER BY `cid` ASC", $connect);
+		while($temp=mysql_fetch_array($result)){  //產品A直接原料+產品B直接原料+產品A直接人工+產品B直接人工+產品A製造費用+產品B製造費用
+			$price[$i]=$temp['product_A_material_total']+$temp['product_B_material_total']+$temp['product_A_direct_labor']+$temp['product_B_direct_labor']+$temp['product_A_overhead']+$temp['product_A_overhead'];
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
-			if($sales_income[$i]==0)//避免分母為零
-				echo "<td>-</td>";
-			else{
-				if($month==1&&$year!=1)
+			if($month==1&&$year!=1)
 					$sql_profit=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=($year-1) AND `month`=12",$connect);
-				elseif($month!=1)	
+			elseif($month!=1)	
 					$sql_profit=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=$year AND `month`=($month-1)",$connect);
-				$result = mysql_query($sql_profit);
-        		$profit = mysql_fetch_row($result);
-				$print[$i]=($price[$i]+$profit['profit']+$OE[$i]+$profit['oe'])/$profit['revenue']*100; //$sales_income[$i]*100;-->percent
+        	$profit = mysql_fetch_array($sql_profit);
+			if($sales_income[$i]==0){//避免分母為零
+				echo "<td>-</td>";
+				$print[$i]=$profit['profit'];
+			}	
+			else{
+				$print[$i]=($price[$i])/$sales_income[$i]*100; //$sales_income[$i]*100;-->percent
 				echo "<td>".number_format($print[$i],2)."%</td>";
-			mysql_query("UPDATE `dupont` SET oe=".$OE[$i]+$profit['oe'].",profit=".$price[$i]+$profit['profit']." WHERE cid=".$c[$i]." AND year='$year' AND month='$month';",$connect) or die(mysql_error());
 			}
+			$OE_total[$i]=$OE[$i]+$profit['oe'];
+			mysql_query("UPDATE `dupont` SET `oe`=$OE_total[$i],`profit`=$print[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
+			
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -638,8 +591,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($costs[$i]+$sale['cost'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET cost=".$costs[$i]+$sale['cost']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$cost_total[$i]=$costs[$i]+$sale['cost'];
+			mysql_query("UPDATE `dupont` SET cost=$cost_total[$i] WHERE `cid`='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -663,8 +617,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($material_total[$i]+$sale['dm'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET dm=".$material_total[$i]+$sale['dm']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$material[$i]=$material_total[$i]+$sale['dm'];
+			mysql_query("UPDATE `dupont` SET `dm`=$material[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -680,8 +635,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($direct_labor[$i]+$sale['dl'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET dm=".$direct_labor[$i]+$sale['dl']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$dl_total[$i]=$direct_labor[$i]+$sale['dl'];
+			mysql_query("UPDATE `dupont` SET dl=$dl_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -697,8 +653,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($overhead[$i]+$sale['overhead'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET overhead=".$overhead[$i]+$sale['overhead']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$overhead_total[$i]=$overhead[$i]+$sale['overhead'];
+			mysql_query("UPDATE `dupont` SET overhead=$overhead_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -706,7 +663,7 @@ and open the template in the editor.
 		$i=1;
 		$result = mysql_query("SELECT * FROM `fixed_assets` WHERE `name` = '142' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
-			$price[$i]=$temp['price']*(-1);//減：累計折舊
+			$price[$i]=$temp['price']*(-1);//減：累計折舊  (存累積負數→變正數)
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
@@ -715,17 +672,28 @@ and open the template in the editor.
 			elseif($month!=1)	
 				$sql_sale=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=$year AND `month`=($month-1)",$connect);
         	$sale = mysql_fetch_row($sql_sale);
-			if($sales_income[$i]+$sale['revenue']==0)//
+			if($sales_income[$i]+$sale['revenue']==0)
 				echo "<td>-</td>";
 			else{
 				$print[$i]=$price[$i]/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET depreciation=".$price[$i]+$sale['depreciation']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			mysql_query("UPDATE `dupont` SET depreciation=$price[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
 	echo "<tr align='center' class='odd'><td>營業費用佔營收百分比</td>";
+		$i=1;
+		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
+		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
+		mysql_select_db("testabc_main",$connect);
+		while($company=mysql_fetch_array($C_name)){//每間公司名稱
+			$CN=$company['CompanyID'];
+			$result = mysql_query("SELECT SUM(price) FROM `operating_expenses` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
+			$temp=mysql_fetch_array($result);
+			$OE[$i]=$temp[0]*(-1);
+			$i++;
+		}
 		for($i=1;$i<=$length;$i++){
 			if($month==1&&$year!=1)
 				$sql_sale=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=($year-1) AND `month`=12",$connect);
@@ -759,8 +727,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($price[$i]+$sale['manage'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET manage=".$price[$i]+$sale['manage']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$manage_total[$i]=$price[$i]+$sale['manage'];
+			mysql_query("UPDATE `dupont` SET manage=$manage_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 		
@@ -782,8 +751,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($price[$i]+$sale['sales'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET sales=".$price[$i]+$sale['sales']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$sale_total[$i]=$price[$i]+$sale['sales'];
+			mysql_query("UPDATE `dupont` SET sales=$sale_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -805,8 +775,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=($price[$i]+$sale['rd'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET rd=".$price[$i]+$sale['rd']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			$rd_total[$i]=$price[$i]+$sale['rd'];
+			mysql_query("UPDATE `dupont` SET rd=$rd_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -818,35 +789,27 @@ and open the template in the editor.
 		
 		while($company=mysql_fetch_array($C_name)){//每間公司名稱
 			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `fixed_assets` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
+			$result = mysql_query("SELECT SUM(price) FROM `equity` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
 			$temp=mysql_fetch_array($result);
-			$price[$i]=$temp['price'];//固定資產
+			$price[$i]=$temp[0];//權益
 			$i++;
 		}
-		$i=1;
-		mysql_select_db("testabc_login", $connect);//讀ABC所有的公司名稱
-		$C_name=mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC",$connect);
-		mysql_select_db("testabc_main",$connect);
-		while($company=mysql_fetch_array($C_name)){//每間公司名稱
-			$CN=$company['CompanyID'];
-			$result = mysql_query("SELECT SUM(price) FROM `current_assets` WHERE `cid` = '$CN' AND `month` = $month_for_report", $connect);
-			$temp=mysql_fetch_array($result);
-			$price[$i]+=$temp['price'];//+流動資產
-			$i++;
-		}
+		
 		for($i=1;$i<=$length;$i++){
 			if($month==1&&$year!=1)
 				$sql_sale=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=($year-1) AND `month`=12",$connect);
 			elseif($month!=1)	
 				$sql_sale=mysql_query("SELECT * FROM `dupont` WHERE `cid`='".$c[$i]."' AND `year`=$year AND `month`=($month-1)",$connect);
-        	$sale = mysql_fetch_row($sql_sale);
-			if($price[$i]+$sale['revenue']==0)//避免分母為零
+        	$sale = mysql_fetch_array($sql_sale);
+			if($price[$i]==0){//避免分母為零
 				echo "<td>-</td>";
+				$print[i]=$sale['turnover_rate'];
+			}	
 			else{
-				$print[$i]=($sales_income[$i]+$sale['turnover_rate'])/($price[$i]+$sale['revenue'])*100;
+				$print[$i]=($sales_income[$i]+$sale['revenue'])/($price[$i])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET turnover_rate=".$sales_income[$i]+$sale['turnover_rate']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			mysql_query("UPDATE `dupont` SET turnover_rate=$print[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
@@ -860,13 +823,21 @@ and open the template in the editor.
 		$i=1;
 		$result = mysql_query("SELECT * FROM `current_assets` WHERE `name` = '113' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
-			$price[$i]+=$temp['price'];//+應收
+			$price[$i]+=$temp['price'];//應收
+			$capital_total[$i]=$temp['price'];//for累積用
+			$i++;
+		}
+		$i=1;
+		$result = mysql_query("SELECT * FROM `current_assets` WHERE `name` = '111' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
+		while($temp=mysql_fetch_array($result)){
+			$price[$i]+=$temp['price'];//+現金
 			$i++;
 		}
 		$i=1;
 		$result = mysql_query("SELECT * FROM `current_liabilities` WHERE `name` = '213215' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
 			$price[$i]-=$temp['price'];//-應付
+			$capital_total[$i]-=$temp['price'];//for累積用
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
@@ -880,18 +851,16 @@ and open the template in the editor.
 			else{
 				$print[$i]=($price[$i]+$sale['capital'])/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("UPDATE `dupont` SET capital=".$sales_income[$i]+$sale['capital']." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 			}
+			mysql_query("UPDATE `dupont` SET capital=$capital_total[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>";
 	
 	echo "<tr align='center' class='odd'><td>現金佔營收百分比</td>";
 		$i=1;
-        if($month-1==0)
-			$result = mysql_query("SELECT * FROM `cash` WHERE `year` = $year-1 AND `month` = 12 ORDER BY `cid` ASC", $connect);
-        else $result = mysql_query("SELECT * FROM `cash` WHERE `year` = $year AND `month` = $month-1 ORDER BY `cid` ASC", $connect);
+		$result = mysql_query("SELECT * FROM `current_assets` WHERE `name` = '111' AND `month` = $month_for_report ORDER BY `cid` ASC", $connect);
 		while($temp=mysql_fetch_array($result)){
-			$price[$i]=$temp['price'];
+			$price[$i]=$temp['price'];//現金
 			$i++;
 		}
 		for($i=1;$i<=$length;$i++){
@@ -999,8 +968,9 @@ and open the template in the editor.
 			else{
 				$print[$i]=$price[$i]/($sales_income[$i]+$sale['revenue'])*100;
 				echo "<td>".number_format($print[$i],2)."%</td>";
-				mysql_query("INSERT INTO `dupont` (cid,year,property) VALUES ('".$company['CompanyID']."','$year','$month','".$sales_income[$i]+$sale['property']."');",$connect) or die(mysql_error());
 			}
+			//mysql_query("INSERT INTO `dupont` (cid,year,property) VALUES ('".$company['CompanyID']."','$year','$property[i]')",$connect) or die(mysql_error());
+			mysql_query("UPDATE `dupont` SET property=$price[$i] WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'",$connect) or die(mysql_error());
 		}
 		echo "<td>".number_format(array_sum($print)/$length,2)."%</td>"; 
 	echo "</tbody></table>";
