@@ -94,15 +94,15 @@ function jtp(){
 						} 
 						elseif ($department[$i] == "sale") {
 							$sum = $sum + $people * $correspond2['money'];
-							$sum = $sum + $temp['fire_count'] * $correspond['money'] * 3;
+							$sum = $sum + $temp['fire_count'] * $correspond2['money'] * 3;
 						} 
 						elseif ($department[$i] == "human") {
 							$sum = $sum + $people * $correspond2['money2'];
-							$sum = $sum + $temp['fire_count'] * $correspond['money2'] * 3;
+							$sum = $sum + $temp['fire_count'] * $correspond2['money2'] * 3;
 						} 
 						elseif ($department[$i] == "research") {
 							$sum = $sum + $people * $correspond2['money3'];
-							$sum = $sum + $temp['fire_count'] * $correspond['money3'] * 3;
+							$sum = $sum + $temp['fire_count'] * $correspond2['money3'] * 3;
 						}
 						$hire_count=0;
 						$fire_count=0;
@@ -254,11 +254,11 @@ function jtp(){
 					break;
 				case 'ad_b':
 					$for_cal = mysql_query("SELECT * FROM `ad_b` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
-					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_a1'", $connect);
+					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_b1'", $connect);
 					$correspond = mysql_fetch_array($correspondence);
-					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_a2'", $connect);
+					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_b2'", $connect);
 					$correspond2 = mysql_fetch_array($correspondence);
-					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_a3'", $connect);
+					$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='ad_b3'", $connect);
 					$correspond3 = mysql_fetch_array($correspondence);
 					$cal_array = mysql_fetch_array($for_cal);
 					for ($i = 1; $i < 4; $i++){
@@ -501,27 +501,37 @@ function jtp(){
 						$for_cal = mysql_query("SELECT product_A_detect_labor, product_B_detect_labor FROM `production_cost` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
 						$cal_array = mysql_fetch_array($for_cal);
 						$detect_labor=$cal_array[0]+$cal_array[1];
-						//有需要扣分攤折舊?
+						
 						$sum=$overhead-$detect_labor; //-$depreciation;
 						$for_cal = mysql_query("SELECT product_A_direct_labor, product_B_direct_labor FROM `production_cost` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
 						$cal_array = mysql_fetch_array($for_cal);
 						$direct_labor=$cal_array[0]+$cal_array[1];
-						
+						//分攤折舊
+						$for_cal = mysql_query("SELECT product_A_depreciation, product_B_depreciation FROM `production_cost` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
+						$cal_array = mysql_fetch_array($for_cal);
+						$dep=$cal_array[0]+$cal_array[1];    //產品AB折舊和
 							$temp=mysql_query("SELECT price FROM `current_assets` WHERE `name`='114' AND `month`=$round_now AND `cid`='$cid'",$connect);
 							$temp_result=mysql_fetch_array($temp);
 							mysql_query("UPDATE `current_assets` SET `price`=$temp_result[0]+$detect_labor+$direct_labor+$sum WHERE `name`='114' AND `month`=$round_now AND `cid`='$cid'",$connect);
 							
 							$temp=mysql_query("SELECT price FROM `current_assets` WHERE `name`='111' AND `month`=$round_now AND `cid`='$cid'",$connect);
-							$temp_result=mysql_fetch_array($temp);
-							mysql_query("UPDATE `current_assets` SET `price`=$temp_result[0]-$detect_labor-$sum WHERE `name`='111' AND `month`=$round_now AND `cid`='$cid'",$connect);
-/*							//取出本期的累計折舊
-							$temp=mysql_query("SELECT price FROM `fixed_assets` WHERE `name`='142' AND `month`=$round_now AND `cid`='$cid'",$connect);
-							$temp_result=mysql_fetch_array($temp);
-							mysql_query("UPDATE `fixed_assets` SET `price`=$temp_result[0]-$depreciation WHERE `name`='142' AND `month`=$round_now AND `cid`='$cid'",$connect);
-*/							
+							$temp_result=mysql_fetch_array($temp);            //-(製造費用-折舊費用)=減料人工&機器使用成本
+							mysql_query("UPDATE `current_assets` SET `price`=$temp_result[0]-$overhead+$dep WHERE `name`='111' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							//檢料人工入薪資費用
 							$temp=mysql_query("SELECT price FROM operating_expenses WHERE `name`='512' AND `month`=$round_now AND `cid`='$cid'",$connect);
 							$temp_result=mysql_fetch_array($temp);
-							mysql_query("UPDATE `operating_expenses` SET `price`=$temp_result[0]+$direct_labor WHERE `name`='512' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							mysql_query("UPDATE `operating_expenses` SET `price`=$temp_result[0]-$detect_labor WHERE `name`='512' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							//機器使用成本入管理費
+							$temp=mysql_query("SELECT price FROM operating_expenses WHERE `name`='525' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							$temp_result=mysql_fetch_array($temp);     //-(製造費用-檢料人工-折舊費用)
+							mysql_query("UPDATE `operating_expenses` SET `price`=$temp_result[0]-($overhead-$detect_labor-$dep) WHERE `name`='525' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							//取出本期的累計折舊
+							$temp=mysql_query("SELECT price FROM `fixed_assets` WHERE `name`='142' AND `month`=$round_now AND `cid`='$cid'",$connect);
+							$temp_result=mysql_fetch_array($temp);		
+							mysql_query("UPDATE `fixed_assets` SET `price`=$temp_result[0]-$dep WHERE `name`='142' AND `month`=$round_now AND `cid`='$cid'",$connect);
+					
+							
+							
 					}
 					$netin+=$direct_labor;
 					break;
@@ -1061,7 +1071,7 @@ function jtp(){
 						$temp_result=mysql_fetch_array($temp);
 						mysql_query("UPDATE `equity` SET `price`=$temp_result[0]+$sum WHERE `name`='35' AND `month`=$round_now AND `cid`='$cid'",$connect);
 						
-						mysql_query("UPDATE `financing_netin` SET `price`=$sum*(-1) WHERE `name`='dividend' AND `month`=$round_now AND `cid`='$cid'",$connect);
+						mysql_query("UPDATE `financing_netin` SET `price`=$sum WHERE `name`='dividend' AND `month`=$round_now AND `cid`='$cid'",$connect);
 					}
 					break;
 				case 'treasury':
@@ -1227,30 +1237,10 @@ function jtp(){
 		//日記帳以外的，現金流量表
 		//進貨付現
 		$temp2=0;
-		$for_cal = mysql_query("SELECT product_A_COGS, product_B_COGS FROM `production_cost` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2=$cal_array[0]+$cal_array[1];
-		$for_cal = mysql_query("SELECT price FROM `current_assets` WHERE `name`='114' AND `month`=$round_now AND `cid`='$cid'", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2+=$cal_array[0];
-		$for_cal = mysql_query("SELECT price FROM `current_assets` WHERE `name`='114' AND `month`=$round_now-1 AND `cid`='$cid'", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2-=$cal_array[0];
-					$for_cal = mysql_query("SELECT product_A_depreciation, product_B_depreciation FROM `production_cost` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' ORDER BY `year`, `month`", $connect);
-					$cal_array = mysql_fetch_array($for_cal);//考慮到處分資產會影響到累計折舊，應該讀當期的製造費用-折舊
-					$temp2 -= $cal_array[0]+$cal_array[1];
-		/*$for_cal = mysql_query("SELECT price FROM `fixed_assets` WHERE `name`='142' AND `month`=$round_now AND `cid`='$cid'", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2+=$cal_array[0];
-		$for_cal = mysql_query("SELECT price FROM `fixed_assets` WHERE `name`='142' AND `month`=$round_now-1 AND `cid`='$cid'", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2-=$cal_array[0];*/
-		$for_cal = mysql_query("SELECT price FROM `current_liabilities` WHERE `name`='213215' AND `month`=$round_now AND `cid`='$cid'", $connect);
-		$cal_array = mysql_fetch_array($for_cal);
-		$temp2-=$cal_array[0];
+
 		$for_cal = mysql_query("SELECT price FROM `current_liabilities` WHERE `name`='213215' AND `month`=$round_now-1 AND `cid`='$cid'", $connect);
 		$cal_array = mysql_fetch_array($for_cal);
-		$temp2+=$cal_array[0];
+		$temp2+=$cal_array[0];            //上月應付帳款與其他應付款
 		mysql_query("UPDATE `operating_netin` SET `price`=0-$temp2 WHERE `name`='purchase_product' AND `month`=$round_now AND `cid`='$cid'",$connect);
 		
 		//營業費用付現
@@ -1258,8 +1248,8 @@ function jtp(){
 						$cal_array=mysql_fetch_array($for_cal);
 						$temp2=$cal_array[0];//處分資產損失不算... 2012/2/4 13:21
 		$for_cal = mysql_query("SELECT SUM(price) FROM `operating_expenses` WHERE `cid` = '$cid' AND `month` = $round_now", $connect);
-		$cal_array=mysql_fetch_array($for_cal);
-		mysql_query("UPDATE `operating_netin` SET `price`=$cal_array[0]-$temp2 WHERE `name`='operating_exp' AND `month`=$round_now AND `cid`='$cid'",$connect);
+		$cal_array=mysql_fetch_array($for_cal); //加回折舊
+		mysql_query("UPDATE `operating_netin` SET `price`=$cal_array[0]-$temp2+$depre WHERE `name`='operating_exp' AND `month`=$round_now AND `cid`='$cid'",$connect);
 		
 		//其他費用付現
 		$for_cal = mysql_query("SELECT price FROM `other_expenses` WHERE `name`='521' AND `cid` = '$cid' AND `month` = $round_now", $connect);
