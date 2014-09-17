@@ -9,14 +9,14 @@ $connect = mysql_connect("localhost", "root", "53g4ek7abc") or die(mysql_error()
     $year=$_SESSION['year'];
 	$thisround=($year-1)*12+$month;
 	$buymaterial = mysql_query("SELECT 	SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`),SUM(`mb_supplier_a`),SUM(`mb_supplier_b`),SUM(`mb_supplier_c`),SUM(`mc_supplier_a`),SUM(`mc_supplier_b`),SUM(`mc_supplier_c`)
-FROM purchase_materials WHERE `cid`='$cid' AND (`year`-1)*12+`month`<$thisround");// AND `year`='$year' AND `month`='$newmonth'");
+FROM purchase_materials WHERE `cid`='$cid' AND (`year`-1)*12+`month`<=$thisround");// AND `year`='$year' AND `month`='$newmonth'");
 	//$usematerial = mysql_query("SELECT SUM(`SupA_Monitor`),SUM(`SupB_Monitor`),SUM(`SupC_Monitor`),SUM(`SupA_Kernel`),SUM(`SupB_Kernel`),SUM(`SupC_Kernel`),SUM(`SupA_KeyBoard`),SUM(`SupB_KeyBoard`),SUM(`SupC_KeyBoard`) FROM production WHERE `cid`='$cid' ");//AND `year`='$year' AND `month`='$newmonth'");
     
 	$useA_material = mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`),SUM(`mb_supplier_a`),SUM(`mb_supplier_b`),SUM(`mb_supplier_c`),SUM(`mc_supplier_a`),SUM(`mc_supplier_b`),SUM(`mc_supplier_c`)
-FROM product_a WHERE `cid`='$cid' AND (`year`-1)*12+`month`<$thisround");// AND `year`='$year' AND `month`='$newmonth'");
+FROM product_a WHERE `cid`='$cid' AND (`year`-1)*12+`month`<=$thisround");// AND `year`='$year' AND `month`='$newmonth'");
 
 	$useB_material = mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`),SUM(`mb_supplier_a`),SUM(`mb_supplier_b`),SUM(`mb_supplier_c`)
-FROM product_b WHERE `cid`='$cid' AND (`year`-1)*12+`month`<$thisround");// AND `year`='$year' AND `month`='$newmonth'");
+FROM product_b WHERE `cid`='$cid' AND (`year`-1)*12+`month`<=$thisround");// AND `year`='$year' AND `month`='$newmonth'");
 
 	$row = mysql_fetch_array($buymaterial);
     $rowA = mysql_fetch_array($useA_material);
@@ -232,10 +232,12 @@ and open the template in the editor.
                                 data: "&option=update&type=B&a_supplyA="+r_aa+"&a_supplyB="+r_ba+"&a_supplyC="+r_ca+"&b_supplyA="+r_ab+"&b_supplyB="+r_bb+"&b_supplyC="+r_cb,
                                 success: function(str){
                                     //alert("SUCCESS~!!")
-                                    alert("Success!");
+                                    alert(str);
+									
 									//journal();
                                 }
                         	});
+							
 						}//end of else
                     });//end of submit
                 }//end of clickset()
