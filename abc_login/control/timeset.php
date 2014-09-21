@@ -631,9 +631,23 @@ $(document).ready(function(){
 			success:
 				function(str){
 //						alert("rank success~!!"+str);
+						dupont();
 				}
 		});
 	}
+	var dupont=function(){
+			//alert(15);
+			$.ajax({
+				url: '../../abc_main/LeftFeatures/dupont.php',
+				type:'POST',
+				error:
+					function(xhr) {alert('Ajax request 發生錯誤19');},
+				success:
+					function(str){
+						//alert("dupont  success~!!"+str);
+					}
+			});
+		}
 </script>
 
 

@@ -103,7 +103,7 @@
 		$ROI[$i]=($stock_price[$i]-$last_stock_price[$i]+$Dividend[$i])/$last_stock_price[$i]*100;
 		if($IC[$i]==0&&$last_IC[$i]==0)//避免分母為零
 			$IC[$i]=1;
-		$EVA[$i]=($ROIC[$i]/(($IC[$i]+$last_IC[$i])/2)*100-$WACC[$i])*($IC[$i]+$last_IC[$i])/2;
+		$EVA[$i]=100000000+($ROIC[$i]/(($IC[$i]+$last_IC[$i])/2)*100-$WACC[$i])*($IC[$i]+$last_IC[$i])/2; //-------------------------------------------------------------------------------------
 	}
 	//新增KPI部分，資料表的account是公司名，session是回合數~~
 	$i=1;
@@ -193,7 +193,11 @@
 		
 		//經濟附加價值
 		$print6[$i]=$EVA[$i];
+<<<<<<< HEAD
 		echo "<td>".number_format($print6[$i],2)."</td>";
+=======
+		echo "<td>".number_format($print6[$i],0)."</td>";
+>>>>>>> origin/test
 		echo "</tr>";
 		$flag++;
 		$i++;
@@ -207,7 +211,11 @@
 	echo "<td>".number_format(array_sum($print3)/$length)."</td>";
 	echo "<td>".number_format(array_sum($print4)/$length,2)."%</td>";
 	echo "<td>".number_format(array_sum($print5)/$length,2)."%</td>";
+<<<<<<< HEAD
 	echo "<td>".number_format(array_sum($print6)/$length,2)."</td>";
+=======
+	echo "<td>".number_format(array_sum($print6)/$length)."</td>";
+>>>>>>> origin/test
     echo "</tr>";
 	echo "</tfoot>";
 ?>
@@ -314,22 +322,32 @@
 	$cid = mysql_query("SELECT DISTINCT(`CompanyID`) FROM account ORDER BY `CompanyID` ASC");
     $comp = mysql_fetch_array($cid);
 	mysql_select_db("testabc_main");
+<<<<<<< HEAD
 	//echo $c[$i];
+=======
+>>>>>>> origin/test
 	//所以積分先進行計算
 
 	if($_GET['nowPage']){$pages=$_GET['nowPage'];}else{$pages=1;}
 
 	for($i=1;$i<=$length;$i++){
+<<<<<<< HEAD
 	//while($comp_ID=mysql_fetch_array($cid)){
+=======
+>>>>>>> origin/test
 		$sql_score=mysql_query("SELECT * FROM `score` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month`=12");
 		$score = mysql_fetch_array($sql_score);
 		$result=mysql_query("SELECT	SUM(`bankrupt`) FROM `cash` WHERE `cid`='C0".$i."' AND `year`=$pages");
 		$temp = mysql_fetch_array($result);
+<<<<<<< HEAD
 		//echo $temp[0];
 		$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*100);
 		//echo $score_average[0];
 		//$i++;
 	//}
+=======
+		$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*1000);
+>>>>>>> origin/test
 	}
 	
 	$flag=0;
@@ -367,7 +385,11 @@
 </table>
 <?php
 if ($year!=1){
+<<<<<<< HEAD
 	echo "<h2 style='color:#008844;'>  ＊ 請注意：倒閉將會倒扣當年積分100分唷!<h2>";
+=======
+	echo "<h2 style='color:#008844;'>  ＊ 請注意：倒閉將會倒扣當年積分1000分唷!<h2>";
+>>>>>>> origin/test
 	$temp=mysql_query("SELECT MAX(`year`) FROM `state`");
     $result_temp=mysql_fetch_array($temp);
     $year=$result_temp[0];
@@ -386,7 +408,10 @@ if ($year!=1){
 else{
 	echo "<h2 style='color:#FF0000;'>需期滿一年才能產生競賽排名! </h2>";
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/test
 ?>
 </body> 
 </html>

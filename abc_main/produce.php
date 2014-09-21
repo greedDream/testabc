@@ -134,7 +134,24 @@
 					$flaw_rate=$flaw_rate*(1+$value);
 				}
         	}//end of foreach
-			$quality=2-$flaw_rate;//計算品質
+			
+			//計算品質
+			for($i=0;$i<2;$i++){
+        	$temp = mysql_query("SELECT SUM(`level`) FROM `relationship_decision` WHERE `cid`='$cid' AND `target`='supplier_$i';",$connect);
+        	$result = mysql_fetch_array($temp);
+        	$supplier_level = $result[0];
+        	}
+        	if($supplier_level<10)
+        		$quality=2-$flaw_rate;
+        	elseif ($supplier_level>=10)
+        		$quality=2-$flaw_rate*0.95;
+        	elseif($supplier_level>=40)
+        		$quality=2-$flaw_rate*0.9;
+        	elseif($supplier_level>=100)
+        		$quality=2-$flaw_rate*0.85;
+        	else
+        		$quality=2-$flaw_rate*0.8;
+			
 						
 			if($quality>0.92){
 				$rank=1;
@@ -195,7 +212,24 @@
 					$flaw_rate=$flaw_rate*(1+$value);
 				}
 			}
-			$quality=2-$flaw_rate;//計算品質
+			//計算品質
+			for($i=0;$i<2;$i++){
+        	$temp = mysql_query("SELECT SUM(`level`) FROM `relationship_decision` WHERE `cid`='$cid' AND `target`='supplier_$i';",$connect);
+        	$result = mysql_fetch_array($temp);
+        	$supplier_level = $result[0];
+        	}
+        	if($supplier_level<10)
+        		$quality=2-$flaw_rate;
+        	elseif ($supplier_level>=10)
+        		$quality=2-$flaw_rate*0.95;
+        	elseif($supplier_level>=40)
+        		$quality=2-$flaw_rate*0.9;
+        	elseif($supplier_level>=100)
+        		$quality=2-$flaw_rate*0.85;
+        	else
+        		$quality=2-$flaw_rate*0.8;
+			
+			//等級
 			if($quality>0.96){
 				$rank=1;
 			}
