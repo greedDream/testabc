@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
@@ -227,48 +227,23 @@ and open the template in the editor.
         }
 
         function getCount(){
-            $.ajax({
-                    url:"hire_process.php",
-                    type: "GET",
-                    asyc:false,
-                    datatype: "html",
-                    data: {type:"finan"},
-                    success: function(str){
-                        arr=str.split("|");
-                        finan_current=parseInt(arr[0]);
-                    }
-                });$.ajax({
-                    url:"hire_process.php",
-                    type: "GET",
-                    asyc:false,
-                    datatype: "html",
-                    data: {type:"sale"},
-                    success: function(str){
-                        arr=str.split("|");
-                        sale_current=parseInt(arr[0]);
-                    }
-                });$.ajax({
-                    url:"hire_process.php",
-                    type: "GET",
-                    asyc:false,
-                    datatype: "html",
-                    data: {type:"human"},
-                    success: function(str){
-                        arr=str.split("|");
-                        human_current=parseInt(arr[0]);
-                    }
-                });$.ajax({
-                    url:"hire_process.php",
-                    type: "GET",
-                    asyc:false,
-                    datatype: "html",
-                    data: {type:"research"},
-                    success: function(str){
-                        arr=str.split("|");
-                        research_current=parseInt(arr[0]);
-                        check_again();
-                    }
-                });
+        	$.ajax({
+        		url:"hire_check.php",
+        		type: "GET",
+        		async:false,
+        		datatype: "html",
+        		data: {type:"people"},
+        		success: function(str)
+        		{
+        			arr=str.split("|");
+        			finan_current = parseInt(arr[0]);       			
+                    sale_current  = parseInt(arr[1]);
+                    research_current = parseInt(arr[2]);
+                    human_current = parseInt(arr[3]);
+                    check_again();
+        		}
+        	}
+        			);
         }
 
         var jump=function(){
@@ -283,8 +258,7 @@ and open the template in the editor.
                 success:
                     function(str){
                         alert("SUCCESS~!!");
-                        //window.location.href="taiwan_order.php";
-						window.location.href="order.html";
+						window.location.href="taiwan_order.php";
                     }
                 });
             result_global="";

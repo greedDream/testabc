@@ -246,6 +246,16 @@ $(function(){
 					else if(order==5)
 						document.getElementById('contentiframe').src='./ValueRelationship/RelationshipManagement.php?select_tab=5';
 				}
+
+				// -----------------7/23
+				else if (dnum==21){
+				
+				document.getElementById('contentiframe').src='./SystemIfo/Info.php';	
+				}
+				
+				
+				
+				// ----------------7/23
 						
 				//end 判斷dnum
 															

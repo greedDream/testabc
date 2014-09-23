@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 	$connect = mysql_connect("localhost", "root", "53g4ek7abc") or die(mysql_error());
 	mysql_select_db("testabc_main", $connect);
 	
 	if($_GET['type']==A){
 		
-		mysql_query("UPDATE `parameter_description` Set `value`=".$_GET['product_A_size_ratio']." where `name`='product_A_size_ratio' ",$connect);
+		mysql_query("UPDATE `parameter_description` Set `value`=".$_GET['product_A_size_ratio']." where `name`='product_A_size_ratio'");
 		mysql_query("UPDATE `parameter_description` Set `value`=".$_GET['product_B_size_ratio']." where `name`='product_B_size_ratio' ",$connect);
 		mysql_query("UPDATE `parameter_description` Set `value`=".$_GET['supplierA_flaw']." where `name`='supplierA_flaw' ",$connect);
 		mysql_query("UPDATE `parameter_description` Set `value`=".$_GET['supplierB_flaw']." where `name`='supplierB_flaw' ",$connect);
@@ -50,53 +50,53 @@
 	//-------------------------------我是分隔線~(￣▽￣)~(＿△＿)~(￣▽￣)~(＿△＿)~(￣▽￣)~------------------------------
 	
 	else if($_GET['type']==B){
-		mysql_query("TRUNCATE TABLE `ad_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `ad_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `current_people` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `customer_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `donate` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `dupont` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `fixed_assets` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `fund_raising` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `income_taxes`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `investor_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `kpi_info` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `machine` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `materials_cost` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `operating_costs` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `order_accept` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `order_detail` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `process_improvement` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_famous` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_plan` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_quality` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_history` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `production_cost` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `purchase_materials_price` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `purchase_materials` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `r_d` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `relationship_decision` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `share` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `score` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `state` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_c` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `training` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `cash`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `stock`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `contract`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `market_trend`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `budget`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `budget_hire`reuse storage;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `ad_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `ad_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `current_people` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `customer_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `donate` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `dupont` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `fixed_assets` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `fund_raising` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `income_taxes`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `investor_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `kpi_info` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `machine` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `materials_cost` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `operating_costs` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `order_accept` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `order_detail` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `process_improvement` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_famous` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_plan` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_quality` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_history` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `production_cost` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `purchase_materials_price` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `purchase_materials` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `r_d` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `relationship_decision` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `share` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `score` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `state` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_c` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `training` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `cash`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `stock`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `contract`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `market_trend`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `budget`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `budget_hire`;",$connect) or die(mysql_error());
 		
 		$table=array("operating_revenue","operating_costs","operating_expenses","other_revenue","other_expenses","fixed_assets","current_assets","equity","long-term_liabilities","current_liabilities","operating_netin","investing_netin","financing_netin","cash_balance_last");
 		$length=count($table);
 		for($i=0;$i<$length;$i++){
-			mysql_query("TRUNCATE TABLE `$table[$i]`reuse storage;",$connect) or die(mysql_error());
+			mysql_query("TRUNCATE TABLE `$table[$i]`;",$connect) or die(mysql_error());
 		}
 		
 		mysql_query("UPDATE `parameter_description` SET `value`=2 WHERE `name`='product_A_size_ratio';",$connect);
@@ -178,53 +178,53 @@
 	//-------------------------------我是分隔線~(￣▽￣)~(＿△＿)~(￣▽￣)~(＿△＿)~(￣▽￣)~------------------------------
 	
 	else if($_GET['type']==C){
-		mysql_query("TRUNCATE TABLE `ad_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `ad_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `current_people` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `customer_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `donate` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `dupont` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `fixed_assets` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `fund_raising` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `income_taxes`reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `investor_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `kpi_info` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `machine` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `materials_cost` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `operating_costs` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `order_accept` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `order_detail` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `process_improvement` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_famous` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_plan` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_quality` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `product_history` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `production_cost` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `purchase_materials_price` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `purchase_materials` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `r_d` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `relationship_decision` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `share` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `score` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `state` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_a` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_b` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_c` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `supplier_satisfaction` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `training` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `cash` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `stock` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `contract` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `market_trend` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `budget` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `budget_hire` reuse storage;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `ad_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `ad_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `current_people` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `customer_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `donate` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `dupont` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `fixed_assets` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `fund_raising` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `income_taxes`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `investor_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `kpi_info` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `machine` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `materials_cost` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `operating_costs` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `order_accept` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `order_detail` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `process_improvement` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_famous` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_plan` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_quality` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `product_history` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `production_cost` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `purchase_materials_price` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `purchase_materials` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `r_d` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `relationship_decision` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `share` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `score` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `state` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_a` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_b` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_c` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `supplier_satisfaction` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `training` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `cash`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `stock`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `contract`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `market_trend`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `budget`;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `budget_hire`;",$connect) or die(mysql_error());
 		
 		$table=array("operating_revenue","operating_costs","operating_expenses","other_revenue","other_expenses","fixed_assets","current_assets","equity","long-term_liabilities","current_liabilities","operating_netin","investing_netin","financing_netin","cash_balance_last");
 		$length=count($table);
 		for($i=0;$i<$length;$i++){
-			mysql_query("TRUNCATE TABLE `$table[$i]` reuse storage;",$connect) or die(mysql_error());
+			mysql_query("TRUNCATE TABLE `$table[$i]`;",$connect) or die(mysql_error());
 		}
 		
 		mysql_query("UPDATE `parameter_description` SET `value`=2 WHERE `name`='product_A_size_ratio';",$connect);
@@ -270,8 +270,8 @@
 		
 		mysql_select_db("testabc_login", $connect);
 		
-		mysql_query("TRUNCATE TABLE `authority` reuse storage;",$connect) or die(mysql_error());
-		mysql_query("TRUNCATE TABLE `account` reuse storage;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `authority` ;",$connect) or die(mysql_error());
+		mysql_query("TRUNCATE TABLE `account` ;",$connect) or die(mysql_error());
 		
 	}
 	

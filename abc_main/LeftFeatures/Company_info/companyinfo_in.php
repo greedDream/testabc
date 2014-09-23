@@ -36,6 +36,7 @@ $thisround=($year-1)*12+$month;
 	$lia_now = 0;
     $cash = 0;
     $stock = 0;
+    $stock_price =0;
     $result = mysql_query("SELECT * FROM `fund_raising` WHERE `cid`='$cid' ORDER BY `year`, `month`");
     while ($row = mysql_fetch_array($result)) {
         $compare = ((integer) $row['year'] - 1) * 12 + (integer) $row['month'];
@@ -50,10 +51,17 @@ $thisround=($year-1)*12+$month;
     $row = mysql_fetch_row($result);
 	$outside_stock = $row[0];
     $stock = $my_stock + $outside_stock;  //股數
+    
+    $result = mysql_query("SELECT `stock_price` FROM `stock` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
+    $row = mysql_fetch_row($result);
+    $stock_price = $row[0];
+    
     $result = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
     $row = mysql_fetch_row($result);
     $cash = (int) $row[0];  //現金
-
+	
+    
+    
      //員工數目
     $number_equip = 0;
     $number_finance = 0;
@@ -293,9 +301,30 @@ FROM `product_b` WHERE `cid`='$cid' AND (`year`-1)*12+`month`<$thisround");// AN
 <li style="display: none;">
 <div>
 <h2>股票價格</h2>
+	<table width="86%" border="1" cellspacing="0" cellpadding="0">
+	<tr align="center">
+	 <tr>
+      <td>公司名稱</td>
+      <td><?php echo $cid ?></td>
+    </tr>
+    
+    <tr>
+      <td>公司股數</td>
+      <td><?php echo $stock ?></td>
+    </tr>
+    
+    <tr>
+    	<td>公司股價</td>
+    	<td><?php echo $stock_price ?></td>
+    </tr>
+    
+    
+    </tr>
+	</table>
 <iframe width='802' height='900'  scrolling='yes' frameborder='0' align='center'  src='./stockprice_lineChart.html'></iframe>
 </div>
 </li>
+
 <li style="display: none;">
 <div>
 <h2>員工數目</h2>
