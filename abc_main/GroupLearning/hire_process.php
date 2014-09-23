@@ -16,13 +16,13 @@ mysql_select_db("testabc_main", $connect);
 if (!strcmp($_GET['type'], "finan")) {
     $result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'finance';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0] - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
@@ -31,13 +31,13 @@ if (!strcmp($_GET['type'], "finan")) {
 } else if (!strcmp($_GET['type'], "equip")) {
     $result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'equip';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0] - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
@@ -46,13 +46,13 @@ if (!strcmp($_GET['type'], "finan")) {
 } else if (!strcmp($_GET['type'], "sale")) {
     $result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'sale';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0] - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
@@ -61,13 +61,13 @@ if (!strcmp($_GET['type'], "finan")) {
 } else if (!strcmp($_GET['type'], "human")) {
     $result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'human';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0 - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
@@ -76,13 +76,13 @@ if (!strcmp($_GET['type'], "finan")) {
 } else if (!strcmp($_GET['type'], "research")) {
     $result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'research';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0] - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
@@ -122,13 +122,13 @@ if (!strcmp($_GET['type'], "finan")) {
 } else if (!strcmp($_GET['type'], "sale_service")){
 	$result = mysql_query("SELECT * FROM `current_people` WHERE `department` = 'sale';", $connect);
     while ($row = mysql_fetch_array($result)) {
-        if ($row['cid'] == $cid) {
-            if ((($row['year'] - 1) * 12 + $row['month'] ) < $compare) {
-                $hire_count = $hire_count + $row['hire_count'];
-                $fire_count = $fire_count + $row['fire_count'];
-            } elseif ((($row['year'] - 1) * 12 + $row['month'] ) == $compare) {
-                $thismonth_hire = $thismonth_hire + $row['hire_count'];
-                $thismonth_fire = $thismonth_fire + $row['fire_count'];
+        if ($row[2] == $cid) {
+            if ((($row[0] - 1) * 12 + $row[1] ) < $compare) {
+                $hire_count = $hire_count + $row[4];
+                $fire_count = $fire_count + $row[5];
+            } elseif ((($row[0] - 1) * 12 + $row[1] ) == $compare) {
+                $thismonth_hire = $thismonth_hire + $row[4];
+                $thismonth_fire = $thismonth_fire + $row[5];
             }
         }
     }
