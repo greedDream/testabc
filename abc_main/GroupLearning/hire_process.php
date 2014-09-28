@@ -7,46 +7,40 @@ $year=$_SESSION['year'];
 $compare = ($year - 1) * 12 + $month;
 $hire_count = 0;
 $fire_count = 0;
-$thismonth_hire = 0;
-$thismonth_fire = 0;
+$thismonth = 0;
 $connect = mysql_connect("localhost", "root", "53g4ek7abc") or die(mysql_error());
 mysql_select_db("testabc_main", $connect);
     mysql_query("set names 'utf8'");
 
 if (!strcmp($_GET['type'], "finan")) {
     $result = mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM `current_people` WHERE `department` = 'finance' AND `cid` = $cid ;", $connect);
-	$thismonth_hire = mysql_query("SELECT `hire_count` FROM `current_people` WHERE `department` = 'finance' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
-	$thismonth_fire = mysql_query("SELECT `fire_count` FROM `current_people` WHERE `department` = 'finance' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);    
-    $num = $result[0] - $result[1];
-    echo $num . "|" . $thismonth_hire . "|" . $thismonth_fire;
+	$thismonth = mysql_query("SELECT `hire_count`,`fire_count` FROM `current_people` WHERE `department` = 'finance' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
+	$num = $result[0] - $result[1];
+    echo $num . "|" . $thismonth[0] . "|" . $thismonth[1];
 	
 } else if (!strcmp($_GET['type'], "equip")) {
     $result = mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM `current_people` WHERE `department` = 'equip' AND `cid` = $cid ;", $connect);
-	$thismonth_hire = mysql_query("SELECT `hire_count` FROM `current_people` WHERE `department` = 'equip' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
-	$thismonth_fire = mysql_query("SELECT `fire_count` FROM `current_people` WHERE `department` = 'equip' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);    
-    $num = $result[0] - $result[1];
-    echo $num . "|" . $thismonth_hire . "|" . $thismonth_fire;
+	$thismonth = mysql_query("SELECT `hire_count`,`fire_count` FROM `current_people` WHERE `department` = 'equip' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
+	$num = $result[0] - $result[1];
+     echo $num . "|" . $thismonth[0] . "|" . $thismonth[1];
 	
 } else if (!strcmp($_GET['type'], "sale")) {
     $result = mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM `current_people` WHERE `department` = 'sale' AND `cid` = $cid ;", $connect);
-	$thismonth_hire = mysql_query("SELECT `hire_count` FROM `current_people` WHERE `department` = 'sale' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
-	$thismonth_fire = mysql_query("SELECT `fire_count` FROM `current_people` WHERE `department` = 'sale' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);    
-    $num = $result[0] - $result[1];
-    echo $num . "|" . $thismonth_hire . "|" . $thismonth_fire;
+	$thismonth = mysql_query("SELECT `hire_count`,`fire_count` FROM `current_people` WHERE `department` = 'sale' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
+	$num = $result[0] - $result[1];
+     echo $num . "|" . $thismonth[0] . "|" . $thismonth[1];
 	
 } else if (!strcmp($_GET['type'], "human")) {
     $result = mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM `current_people` WHERE `department` = 'human' AND `cid` = $cid ;", $connect);
-	$thismonth_hire = mysql_query("SELECT `hire_count` FROM `current_people` WHERE `department` = 'human' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
-	$thismonth_fire = mysql_query("SELECT `fire_count` FROM `current_people` WHERE `department` = 'human' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);    
-    $num = $result[0] - $result[1];
-    echo $num . "|" . $thismonth_hire . "|" . $thismonth_fire;
+	$thismonth = mysql_query("SELECT `hire_count`,`fire_count` FROM `current_people` WHERE `department` = 'human' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
+	$num = $result[0] - $result[1];
+     echo $num . "|" . $thismonth[0] . "|" . $thismonth[1];
 	
 } else if (!strcmp($_GET['type'], "research")) {
     $result = mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM `current_people` WHERE `department` = 'research' AND `cid` = $cid ;", $connect);
-	$thismonth_hire = mysql_query("SELECT `hire_count` FROM `current_people` WHERE `department` = 'research' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
-	$thismonth_fire = mysql_query("SELECT `fire_count` FROM `current_people` WHERE `department` = 'research' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);    
-    $num = $result[0] - $result[1];
-    echo $num . "|" . $thismonth_hire . "|" . $thismonth_fire;
+	$thismonth = mysql_query("SELECT `hire_count`,`fire_count` FROM `current_people` WHERE `department` = 'research' AND `cid` = $cid; AND `year`=$year AND `month`=$month", $connect);
+	$num = $result[0] - $result[1];
+     echo $num . "|" . $thismonth[0] . "|" . $thismonth[1];
 	
 } else if (!strcmp($_GET['type'], "hire_submit")) {
     $temp = mysql_query("SELECT * FROM `current_people` WHERE `year`=$year AND `month`=$month");
