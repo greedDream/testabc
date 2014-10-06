@@ -207,7 +207,7 @@
 				com2B_price=parseInt(document.getElementById("get_com2B_price").innerHTML.replace(/\,/g,''));
 				com2C_price=parseInt(document.getElementById("get_com2C_price").innerHTML.replace(/\,/g,''));
 				detA_price=parseInt(document.getElementById("get_detA_price").innerHTML.replace(/\,/g,''));
-				detB_price=parseInt(document.getElementById("get_detA_price").innerHTML.replace(/\,/g,''));
+				detB_price=parseInt(document.getElementById("get_detB_price").innerHTML.replace(/\,/g,''));
 				var purchase_cut_total= cutA_price*cutA_count+cutB_price*cutB_count+cutC_price*cutC_count;
 				var purchase_com1_total= com1A_price*com1A_count+com1B_price*com1B_count+com1C_price*com1C_count;
 				var purchase_com2_total= com2A_price*com2A_count+com2B_price*com2B_count+com2C_price*com2C_count;

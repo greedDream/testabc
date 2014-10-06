@@ -13,21 +13,7 @@
             var current_f=0,current_e=0,current_s=0,current_h=0,current_r=0;
             $(document).ready(function(){
                 $('#tabs').smartTab({autoProgress: false,stopOnFocus:true,transitionEffect:'slide'});
-				//show current member number
-				//document.getElementById("has_financial_member").value=current_f;
-				//document.getElementById("has_resourcing_member").value=current_e;
-				//document.getElementById("has_sales_member").value=current_s;
-				//document.getElementById("has_executive_member").value=current_h;
-				//document.getElementById("has_r&d_team").value=current_r;
-				//document.getElementById("has_financial_member1").value=current_f;
-				//document.getElementById("has_resourcing_member1").value=current_e;
-				//document.getElementById("has_sales_member1").value=current_s;
-				//document.getElementById("has_executive_member1").value=current_h;
-				//document.getElementById("has_r&d_team1").value=current_r;
-				//alert("OK2");
-				// $("#tabs-1").load("order_B2B.html");
-				// alert("OK");
-				// $("#tabs-2").load("order_B2C.html");
+
 				
 				 var RD_done=0;
                 $.ajax({
@@ -64,7 +50,7 @@
                     else if(RD_done==0){
 					alert("tt22");
                         alert("請先於研發介面研發產品！");
-                      // $("#ap1").append("<iframe id='tabs-1' src='http://www.facebook.com/' style='width:100%;height:76%'></iframe>");
+                    
                         document.getElementById("tabs-1").src="";
                          document.getElementById("tabs-2").src="";
                 }
@@ -109,14 +95,17 @@
             <ul>
                 <li>
                     <a href="#tabs-1">
-                        <img class='logoImage2' border="0" width="20%" src="../images/small.png">
+                      <!--  <img class='logoImage2' border="0" width="20%" src="../images/small.png">
+					  -->
                         <font id="order_2" size="4">小量訂單</font>
                     </a>
                 </li>
                 <li>
                     <a href="#tabs-2">
-                        <img class='logoImage2' border="0" width="20%" src="../images/big.png">
-                        <font id="order_1" size="4">大量訂單</font>
+                        <!--
+						<img class='logoImage2' border="0" width="20%" src="../images/big.png">
+                        -->
+						<font id="order_1" size="4">大量訂單</font>
                     </a>
                 </li>
             </ul>

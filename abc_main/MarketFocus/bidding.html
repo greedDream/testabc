@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
@@ -73,7 +73,7 @@ and open the template in the editor.
                 }
 
                 document.getElementById("subm_"+index).onclick=function(){
-                    var i=this.id.split("_")[1];
+                    var i=this.id.split("_")[1];"C:/Users/KungYen/Downloads/103ABC_ver5/103ABC_ver5/testabc/abc_main/MarketFocus/order_B2C.html"
                     var type=no.split("_")[1];
                     var integer=parseInt(document.getElementById("m_"+i).innerHTML);
                     if(type=="A"){
@@ -258,7 +258,8 @@ and open the template in the editor.
                 success:
                     function(str){
                         alert("SUCCESS~!!");
-						window.location.href="taiwan_order.php";
+                        //window.location.href="taiwan_order.php";
+						window.location.href="order.html";
                     }
                 });
             result_global="";

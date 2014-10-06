@@ -137,8 +137,7 @@
 				return x1 + x2;
 				}
 				
-			function rate(field,rate){
-				
+			function rate(field,rate){				
 				if(field=="fa_cost"|| field=="op_cost"|| field=="ds_cost"){
 					document.getElementById(field).innerHTML=money_d[(rate)];
 					//alert(field);
@@ -299,7 +298,7 @@
                 <tr>
                     <th scope="row">觸控螢幕 </th>
                     <td style="text-align:left;"><p>提升觸控靈敏度，多點觸控之準確性螢幕整體的解析度<br>
-           							       各等級花費：$100,000、$500,000、$300,000</p></td>
+           							       各等級花費：$100,000、$200,000、$300,000</p></td>
                     <td align="center"><span class="rating" id="rate4"></span>
 						<script type="text/javascript">
 						$('#rate4').rating('./donate_share.php',{maxvalue:3, emp:"cm_cost"});
@@ -311,7 +310,7 @@
                 <tr>
                     <th scope="row">記憶體</th>
                     <td style="text-align:left;">能同時間處理更多的工作，降低閃退、當機問題<br>
-                    							 升級花費：$100,000、$500,000、$300,000</td>
+                    							 升級花費：$100,000、$200,000、$300,000</td>
                     <td align="center"><span class="rating" id="rate5"></span>
 						<script type="text/javascript">
 						$('#rate5').rating('./donate_share.php',{maxvalue:3, emp:"en_cost"});

@@ -81,23 +81,23 @@
 	}
 	
 		
-	$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='finance_salary'");
+	$temp = mysql_query("SELECT `money2` FROM correspondence WHERE `name`='current_people'");
 	$result = mysql_fetch_array($temp);
 	$finance_salary = $result[0];
 		
-	$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='equip_salary'");
+	$temp = mysql_query("SELECT `money3` FROM correspondence WHERE `name`='current_people'");
 	$result = mysql_fetch_array($temp);
 	$equip_salary = $result[0];
 		
-	$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='sale_salary'");
+	$temp = mysql_query("SELECT `money` FROM correspondence WHERE `name`='current_people_2'");
 	$result = mysql_fetch_array($temp);
 	$sale_salary = $result[0];
 		
-	$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='human_salary'");
+	$temp = mysql_query("SELECT `money2` FROM correspondence WHERE `name`='current_people_2'");
 	$result = mysql_fetch_array($temp);
 	$human_salary = $result[0];
 		
-	$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='research_salary'");
+	$temp = mysql_query("SELECT `money3` FROM correspondence WHERE `name`='current_people_2'");
 	$result = mysql_fetch_array($temp);
 	$research_salary = $result[0];
 	

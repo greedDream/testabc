@@ -49,10 +49,10 @@
 	$in_p=mysql_fetch_array($sql_inp);
 	//echo $in_p['ma_supplier_a'];
 	$p_inventory=array($in_p[0],$in_p[1],$in_p[2]); //$in_p['ma_supplier_a'],$in_p['ma_supplier_b'],$in_p['ma_supplier_c']
-	$sql_usedLp=mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`) FROM `product_a` WHERE (`year`-1)*12+`month` < $round  AND `cid`='$cid'");
+	$sql_usedLp=mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`) FROM `product_a` WHERE (`year`-1)*12+`month` <= $round  AND `cid`='$cid'");
 	$used_Lp=mysql_fetch_array($sql_usedLp);
 	$p_Lused=array($used_Lp[0],$used_Lp[1],$used_Lp[2]); //$used_Lp['mb_supplier_a'],$used_Lp['mb_supplier_b'],$used_Lp['mb_supplier_c']
-	$sql_usedTp=mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`) FROM `product_b` WHERE (`year`-1)*12+`month` < $round  AND `cid`='$cid'");
+	$sql_usedTp=mysql_query("SELECT SUM(`ma_supplier_a`),SUM(`ma_supplier_b`),SUM(`ma_supplier_c`) FROM `product_b` WHERE (`year`-1)*12+`month` <= $round  AND `cid`='$cid'");
 	$used_Tp=mysql_fetch_array($sql_usedTp);
 	$p_Tused=array($used_Tp[0],$used_Tp[1],$used_Tp[2]); //$used_Tp['ma_supplier_a'],$used_Tp['ma_supplier_b'],$used_Tp['ma_supplier_c']
 	for($i=0;$i<3;$i++){

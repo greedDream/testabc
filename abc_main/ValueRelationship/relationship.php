@@ -166,6 +166,6 @@
 		$split=split("_",$decision);
 		$cus="customer_".$split[0];
 		$star=$split[1];
-		mysql_query("INSERT INTO `relationsip_decision` (`cid`, `year`, `month`, `target`, `decision`, `level`) VALUES ('$cid', $year, $month, '$cus', 'd_2', $star)",$connect);
+		mysql_query("INSERT INTO `relationship_decision` (`cid`, `year`, `month`, `target`, `decision`, `level`) VALUES ('$cid', $year, $month, '$cus', 'd_2', $star)",$connect);
 		}
 ?>

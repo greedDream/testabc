@@ -15,12 +15,8 @@ mysql_query("set names 'utf8'");
 if (($_GET['option']) == "buy_material") {
     $purchase = mysql_query("SELECT * FROM purchase_materials WHERE `cid`='$cid'", $connect);
     while ($row = mysql_fetch_array($purchase)) {
-        $year = (integer) ($row['month'] / 12) + 1;
-        $month = $row['month'] % 12;
-        if ($month == 0) {
-            $month = 12;
-            $year = $year - 1;
-        }
+        $year = $row['year'];
+        $month = $row['month'];
 
         if ($row['ma_supplier_a'] != 0) {
             $reply = $reply . "[" . $year . "," . $month . ",'螢幕與面板','供應商A'," . $row['ma_supplier_a'] . "],";

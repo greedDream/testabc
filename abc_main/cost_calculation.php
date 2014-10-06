@@ -41,7 +41,7 @@ $machine_type = array("A", "B", "C");
 $result = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name` = 'depreciation'");
 $depreciation = mysql_fetch_array($result); //機器折舊120月，平均一年折舊10%
 
-$result = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name` = 'equip_salary'");
+$result = mysql_query("SELECT `money3` FROM `correspondence` WHERE `name` = 'current_people'");
 $equip_salary = mysql_fetch_array($result); //運籌生產薪水
 
 $total_material = 0;
@@ -360,7 +360,7 @@ for ($j = 0; $j < $c_length; $j++) {
                 `product_B_overhead`=$PB_overhead,`product_A_inventory`=$PA_inventory,`product_B_inventory`=$PB_inventory ,
 				`product_A_detect_labor`=$PA_detect_labor,`product_B_detect_labor`=$PB_detect_labor,
 				`product_A_depreciation`=$PA_depreciation,`product_B_depreciation`=$PB_depreciation,
-                `notuse_direct_salary`=$notuse_direct_salary,
+				`notuse_direct_salary`=$notuse_direct_salary,
 				`notuse_cut_depreciation`=$notuse_cut_depreciation,`notuse_combine1_depreciation`=$notuse_combine1_depreciation ,
                 `notuse_detect1_depreciation`=$notuse_detect1_depreciation,`notuse_combine2_depreciation`=$notuse_combine2_depreciation ,
                 `notuse_detect2_depreciation`=$notuse_detect2_depreciation WHERE `cid`='$cid[$j]' AND `year`=$year AND `month`=$month");

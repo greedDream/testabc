@@ -11,14 +11,14 @@ function flag($count){
 
 function report($month) {
 	//決策位置
-    $args = array("current_people" => "招解聘", "share" => "企業共享價值", "share2" => "企業共享價值", "donate" => "捐款",
+    $args = array("current_people" => "招解聘", "share" => "平板差異化", "share2" => "平板差異化", "donate" => "筆電差異化",
         "ad_a" => "廣告行銷A", "ad_b" => "廣告行銷B", "purchase_materials" => "購買原料", "purchase_machine" => "購買資產","sell_machine" => "處分資產",
         "product_a" => "生產筆記型電腦", "product_b" => "生產平板電腦", "process_improvement" => "流程改良", "product_plan" => "生產規劃",
         "r_d" => "產品研發", "training" => "在職訓練", "long" => "長期借款", "short" => "短期借款", "repay" => "還款", "repay2" => "還款", "storage" => "倉儲費用", 
         "start_cash" => "初始資金", "break_contract" => "違約", "interest" => "借款利息", "cash_increase" => "現金增資", "relationship_s" => "供應商關係管理", 
         "relationship_e" => "員工關係管理", "relationship_i" => "投資人關係管理", "dividend" => "現金股利", "depreciation" => "機具折舊", "depreciation_cut" => " 機具折舊", "AR" => "應收帳款", "AP" => "應付帳款", "treasury" => "買回庫藏股"); //決策項目對照
 	
-    $subject = array("current_people" => "薪資費用", "share" => "管理及總務費用", "share2" => "研究發展費用", "donate" => "捐款",
+    $subject = array("current_people" => "薪資費用", "share" => "研究發展費用", "share2" => "研究發展費用", "donate" => "研究發展費用",
         "ad_a" => "廣告費用A", "ad_b" => "廣告費用B", "purchase_materials" => "原料存貨", "purchase_machine" => "機具", "sell_machine" => "現金", 
         "product_a" => "製成品存貨", "product_b" => "製成品存貨", "process_improvement" => "流程改良費用", "product_plan" => "機器製造費用",
         "r_d" => "研發費用", "training" => "訓練費用", "long" => "現金", "short" => "現金", "repay" => "長期借款", "repay2" => "短期借款", "storage" => "倉儲費用", 
@@ -32,7 +32,7 @@ function report($month) {
         "start_cash" => "普通股", "break_contract" => "現金", "interest" => "現金", "cash_increase" => "普通股", "relationship_s" => "現金", 
         "relationship_e" => "現金", "relationship_i" => "現金", "dividend" => "現金", "depreciation" => "累計折舊", "AR" => "應收帳款", "AP" => "現金", "treasury" => "現金", "depreciation_cut" => " 機具折舊"); //會計科目對照(貸)
 
-    $catalog = array("current_people" => "團隊學習", "share" => "價值關係", "share2" => "價值關係", "donate" => "價值關係",
+    $catalog = array("current_people" => "團隊學習", "share" => "市場聚焦", "share2" => "市場聚焦", "donate" => "市場聚焦",
         "ad_a" => "市場聚焦", "ad_b" => "市場聚焦", "purchase_materials" => "價值作業", "purchase_machine" => "資源整合", "sell_machine" => "資源整合", 
         "product_a" => "價值作業", "product_b" => "價值作業", "process_improvement" => "價值作業", "product_plan" => "價值作業",
         "r_d" => "資源整合", "training" => "團隊學習", "long" => "資源整合", "short" => "資源整合", "repay" => "資源整合", "repay2" => "資源整合", "storage" => "非決策", 
@@ -98,13 +98,13 @@ function report($month) {
                         $sum = $sum + $temp['fire_count'] * $correspond['money3'] * 3;
                     } elseif ($department[$i] == "sale") {
                         $sum = $sum + $people * $correspond2['money'];
-                        $sum = $sum + $temp['fire_count'] * $correspond['money'] * 3;
+                        $sum = $sum + $temp['fire_count'] * $correspond2['money'] * 3;
                     } elseif ($department[$i] == "human") {
                         $sum = $sum + $people * $correspond2['money2'];
-                        $sum = $sum + $temp['fire_count'] * $correspond['money2'] * 3;
+                        $sum = $sum + $temp['fire_count'] * $correspond2['money2'] * 3;
                     } elseif ($department[$i] == "research") {
                         $sum = $sum + $people * $correspond2['money3'];
-                        $sum = $sum + $temp['fire_count'] * $correspond['money3'] * 3;
+                        $sum = $sum + $temp['fire_count'] * $correspond2['money3'] * 3;
                     }
                     $hire_count = 0;
                     $fire_count = 0;
@@ -1078,7 +1078,7 @@ function report($month) {
 					}
 					$flag++;
 					flag($flag);
-					echo "<td></td><td style='border-right:0px;'></td><td style='text-align:left;border-left:0px;'>qq</td><td></td><td style='text-align:right'>" . number_format($tax_asset) . "</td><td></td><td></td></tr>";
+					echo "<td></td><td style='border-right:0px;'></td><td style='text-align:left;border-left:0px;'>遞延所得稅負債</td><td></td><td style='text-align:right'>" . number_format($tax_asset) . "</td><td></td><td></td></tr>";
 					if($tax-$tax_asset>0){ 
 						$flag++;
 						flag($flag);

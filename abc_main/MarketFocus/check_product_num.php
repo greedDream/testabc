@@ -99,17 +99,54 @@
         foreach($args as $arr){
             $result=explode('@',$arr);
             $order_no=$result['1'];
-            $type=explode("_",$order_no);
+            $type=split("_",$order_no);
             $num=$result['7'];
             $quality=$correspond[$result['2']];
+			
             if($type['1']=='A')
                 $result_global_A[$quality]=$result_global_A[$quality]+$num;
             else if($type['1']=='B')
-                $result_global_B[$quality]=$result_global_B[$quality]+$num;
+                $result_global_B[$quality]=$result_global_B[$quality]+$num;		
         }
-
+		/*
+           $row= mysql_query("SELECT `quality`, `service` FROM `order_detail` WHERE `order_no`='$order_no'");
+			$check = mysql_fetch_array($row)
+            $checkqqqq= parseInt($quality);
+            $checkqu=$check[0];
+            $checkse=$check[1];
+			
+            if($checkqu<$checkqqqq)
+            {
+            	$string.="請確認產品品質是否有達標";
+            }
+		*/
+		if($string!="")
+		{
+			echo $string;
+		}       
+		else
+		{
         for($i=5;$i>0;$i--){
             $result_sum=0;
+			if($i=5)
+			{
+			$temp_result= mysql_query("SELECT `quality`, `service` FROM `order_detail` WHERE `order_no`='$order_no'");
+			
+			$total=mysql_fetch_array($temp_result);
+            //$checkqqqq= parseInt($quality);
+			
+            $checkqu=$total[0];
+            $checkse=$total[1];
+			
+			if($checkqu<$quality)
+            {
+            	$string.="請確定是否訂單是否有符合品質需求";
+            }	
+			
+			break;
+			}
+			else
+			{
             $temp_result=mysql_query("SELECT SUM(batch) as sum FROM `product_quality` WHERE  `cid`='$cid' AND `product`='A' AND `rank`>=$i",$connect);
             $total=mysql_fetch_array($temp_result);
             if(!empty($total)){
@@ -123,28 +160,52 @@
                     break;
                 }
             }
+			}
         }
 
-        for($i=5;$i>0;$i--){
+		for($i=5;$i>0;$i--){
             $result_sum=0;
-            $temp_result=mysql_query("SELECT SUM(batch) as sum FROM `product_quality` WHERE  `cid`='$cid' AND `product`='B' AND `rank`>=$i",$connect);
+			if($i=5)
+			{
+			$temp_result= mysql_query("SELECT `quality`, `service` FROM `order_detail` WHERE `order_no`='$order_no'");
+			
+			$total=mysql_fetch_array($temp_result);
+            //$checkqqqq= parseInt($quality);
+			
+            $checkqu=$total[0];
+            $checkse=$total[1];
+			
+			if($checkqu<$quality)
+            {
+			if($string!="請確定是否訂單是否有符合品質需求")
+            	$string.="請確定是否訂單是否有符合品質需求";
+            }	
+			
+			break;
+			}
+			else
+			{
+            $temp_result=mysql_query("SELECT SUM(batch) as sum FROM `product_quality` WHERE  `cid`='$cid' AND `product`='A' AND `rank`>=$i",$connect);
             $total=mysql_fetch_array($temp_result);
             if(!empty($total)){
-                $temp_result=mysql_query("SELECT SUM(batch) as sum FROM `product_quality` WHERE  `cid`='$cid' AND `product`='B' AND `rank`>=$i",$connect);
+                $temp_result=mysql_query("SELECT SUM(batch) as sum FROM `product_quality` WHERE  `cid`='$cid' AND `product`='A' AND `rank`>=$i",$connect);
                 $total=mysql_fetch_array($temp_result);
                 $total=$total['sum'];
                 for($j=5;$j>=$i;$j--)
-                    $result_sum+=$result_global_B[$j];
+                    $result_sum+=$result_global_A[$j];
                 if($result_sum>$total){
                     $string.="您現有庫存無法應付所有訂單配置的品質需求~!!";
                     break;
                 }
             }
+			}
         }
 
-        if($string!="")
+        if($string!=""){
             echo $string;
+        }}
     }
+
 
     else if(!strcmp($_POST['type'], "3")){
         $correspond=array("finan_load"=>'finan_count',"sale_load"=>'sale_count',"human_load"=>'human_count',"research_load"=>'research_count');

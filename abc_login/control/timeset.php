@@ -633,7 +633,7 @@ $(document).ready(function(){
 //						alert("rank success~!!"+str);
 						dupont();
 				}
-		});
+		});	
 	}
 	var dupont=function(){
 			//alert(15);

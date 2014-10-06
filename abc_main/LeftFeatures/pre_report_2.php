@@ -11,15 +11,13 @@
 	$year=$_SESSION['year'];
 	//取上一回合來report，ex. 1年5月 => reportm = 4 ,reports = 1, reporty = 0;
 	$reportm=12*($year-1)+$month-1;
-	$reports=floor($reportm/4);
-	$reporty=floor($reportm/12);
 ?>          
         <script type="text/javascript">
             var type=1;
             var month=1;
             $(document).ready(function(){
 				 var re_m=<?php echo $reportm ?>;
-				 if(re_m<4){
+				 if(re_m<3){
 					document.getElementById("season").style.opacity=0.5;
 					document.getElementById("year").style.opacity=0.5;
 				}else if(re_m<12)
@@ -48,7 +46,7 @@
                 $("#season").click(function(){
 					type=2;
                     month=1;
-					if(re_m>3)
+					if(re_m>2)
                     	$("#s_div").load("./finance.php",{'type':""+type, 'month':""+month});
 					else
 						alert("尚未有季報以供參閱!");	
@@ -56,7 +54,7 @@
                 $("#year").click(function(){
                     type=3;
                     month=1;
-					if(re_m>12)
+					if(re_m>11)
                    		$("#s_div").load("./finance.php",{'type':""+type, 'month':""+month});
 					else
 						alert("尚未有年報以供參閱!");		
@@ -75,7 +73,7 @@
                     <input id="year" type="image" src="../images/report_year.png" title="年報" width="50">
                     <input id="back" type="image" src="../images/next.png" title="重新選擇" width="50">
             </tr>
-            <tr><th><input type="image" id="left" src="../images/left.png"></th>
+            <tr Valign="top"><th><input type="image" id="left" src="../images/left.png"></th>
                 <th><div id="s_div"></div></th>
                 <th><input type="image" id="right" src="../images/right.png"></th></tr>
         </table>

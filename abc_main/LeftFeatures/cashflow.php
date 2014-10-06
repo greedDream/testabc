@@ -67,12 +67,14 @@ function report($name,$type,$month){
 	}
 	elseif($type==2){
 		$round=(6+$month*6)/3;
-		$last_season=(int)($last_month/6)+1;
+		$last_season=(int)($last_month/3);
 		if($last_season<$round)
 			$month=(int)($last_month/6);
 
 		$query_command="`cid`= '$name' AND (`month` > ($month-1)*6 AND `month` <= 6+$month*6) ORDER BY `index` ,`month`";
 		$round=(6+$month*6)/3;
+		if($round<4)
+			$round=4;
 		for($i=$round-3;$i<=$round;$i++){
 			if($i%4==1){
 				$y=(int)($i/4)+1;
@@ -89,7 +91,7 @@ function report($name,$type,$month){
 			if($i>4)
 				$j=$i%4;
 			if($j==0)
-				$j=1;
+				$j=4;
 			echo "<th width='210'><b>第 ".$j." 季</b></th>";
 		}
 		echo "</tr></thead>";
@@ -98,11 +100,17 @@ function report($name,$type,$month){
 	elseif($type==3){
 		$round=(24+$month*24)/12+1;
 		$last_year=(int)($last_month/12);
-		if($last_year<$round)
-			$month=$last_year;
-			
-		$query_command="`cid`= '$name' AND (`month` > 12*('$month'-1) AND `month` <= 12*'$month') ORDER BY `index` ,`month`";
+		if($last_year<$round){
+			if($last_year<=5){
+				$month=1;
+			}
+			else{
+				$month=$last_year;    //上一年
+			}
+		}				
+		$query_command="`cid`= '$name' AND (`month` > 12*('$month'-1) AND `month` <= 12*('$month'+4)) ORDER BY `index` ,`month`";
 		$round=(24+$month*24)/12+1;
+		//echo $last_year.":".$round;
 		for($i=$round-4;$i<=$round;$i++)
 			echo "<td width='166'><b>第 ".$i." 年</b></td>";
 		//$sum=5;
@@ -127,21 +135,29 @@ function report($name,$type,$month){
 			else{//若是上期餘額則從資料庫搜尋
 				$final=mysql_query("SELECT * FROM $title_b[title] WHERE ".$query_command,$connect3);
 				while($title_s=mysql_fetch_array($final)){//要搜尋、有price欄位的都用$title_s
-					$price_sum+=$title_s['price'];
 					$i++;//每get一個數值就+1
 					$j=$i;
 					$tag=0;//縮短程式碼用
 					if($type==1){
+						$price_sum+=$title_s['price'];
 						$j=$i;
 						$tag=1;
 					}
-					elseif($type==2 and $i%3==0){
-						$j=$i/3;
-						$tag=1;
+					elseif($type==2){
+						if($i%3==1)
+							$price_sum=$title_s['price'];
+						elseif($i%3==0){
+							$j=$i/3;
+							$tag=1;
+						}
 					}
-					elseif($type==3 and $i%12==0){
-						$j=$i/12;
-						$tag=1;
+					elseif($type==3){
+						if($i%12==1)
+							$price_sum=$title_s['price'];
+						elseif($i%12==0){
+							$j=$i/12;
+							$tag=1;
+						}
 					}
 					if($tag==1){
 						$j--;//"/="會無條件進位，故-1
@@ -165,9 +181,21 @@ function report($name,$type,$month){
 						echo "<td style='border-left:0px; border-right:0px'></td>";	
 				}
 			}else if($type==2){
-				for($i=0;$i<$last_season;$i++){//大標後的空格
+				for($i=0;$i<$last_season-($month-1)*2;$i++){//大標後的空格
+					if($i>3)
+						break;
 					if($i==($last_season-1))
 						echo "<td style='border-left:0px;'></td>";	
+					else
+						echo "<td style='border-left:0px; border-right:0px'></td>";	
+				}
+			
+			}else if($type==3){
+				for($i=0;$i<$last_year-($month-1)*1;$i++){//大標後的空格
+					if($i>4)     //5格
+						break;
+					if($i==($last_year-1))
+						echo "<td style='border-left:0px;'></td>";	     
 					else
 						echo "<td style='border-left:0px; border-right:0px'></td>";	
 				}
@@ -189,6 +217,7 @@ function report($name,$type,$month){
 						echo "<tr ".$bgc_string." align='right'><td align='left'>".$args["$title_s[name]"]."</td>";
 						$i=0;
 						$bgcolor++;
+						$price_sum="";
 					}
 					if($title_s['name']=="income_tax" or $title_s['name']=="assets_sale" or $title_s['name']=="dividend")
 						$u=1;//判斷是否底線
@@ -241,10 +270,21 @@ function report($name,$type,$month){
 						$s_sum[$i]="";
 					}
 				}else if($type==2){
-					for($i=0;$i<$last_season;$i++){
+					for($i=0;$i<$last_season-($month-1)*2;$i++){
+						if($i>3)
+							break;
 						print_price($s_sum[$i],1,0);
 						if($s_sum[$i]!="")
 							$t_sum[$i]+=$s_sum[$i];
+						$s_sum[$i]="";
+					}
+				}else if($type==3){
+					for($i=0;$i<$last_year-($month-1)*1;$i++){   //三大活動現金流入
+						if($i>4)
+							break;
+						print_price($s_sum[$i],1,0);
+						if($s_sum[$i]!="")
+							$t_sum[$i]+=$s_sum[$i];   
 						$s_sum[$i]="";
 					}
 				}

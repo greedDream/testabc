@@ -28,33 +28,9 @@
 	$_SESSION['month']=$month;
 	
 	//error_reporting(0);
-if($month==1&$year==1)
-	{
 	$temp = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`='$year' AND `month`='$month'");
     $money = mysql_fetch_array($temp);
     $cash = $money[0];
-	}
-	else 
-	{
-		$monthtest=$month-1;
-		if($monthtest==0)
-		{
-			$monthtest=12;
-			$year-=1;
-			$temp = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`='$year' AND `month`='$monthtest'");
-		
-			$money = mysql_fetch_array($temp);
-			$cash = $money[0];	
-			$year+=1;	
-		}
-		else{
-		$temp = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`='$year' AND `month`='$monthtest'");
-		
-		$money = mysql_fetch_array($temp);
-		$cash = $money[0];
-		}
-	}
-
 	//echo $year."|".$month."|".$cid;
 	mysql_select_db("testabc_login"); //get cid
 	$sql_cid = mysql_query("SELECT `cid` FROM `authority` WHERE `account`='".$acc."'");
@@ -78,6 +54,7 @@ if($month==1&$year==1)
 	//decision
 	$sql_infod= mysql_query("SELECT * FROM `info_decision`");
 	$info_d=mysql_fetch_array($sql_infod);
+	
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
   <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
@@ -162,7 +139,8 @@ $(function(){
 			var hour = Math.floor((TimeLeft/3600));
 			document.getElementById("lefttime").innerHTML = hour + ' 時  \t'+ Math.floor((TimeLeft%3600)/60)+' 分  \t'+' '+Math.floor(TimeLeft%60)+' 秒';
 			setTimeout("clock()",1000);
-					
+			
+								
 			    }
 			else{
 					location.href="./main.php";
@@ -246,16 +224,6 @@ $(function(){
 					else if(order==5)
 						document.getElementById('contentiframe').src='./ValueRelationship/RelationshipManagement.php?select_tab=5';
 				}
-
-				// -----------------7/23
-				else if (dnum==21){
-				
-				document.getElementById('contentiframe').src='./SystemIfo/Info.php';	
-				}
-				
-				
-				
-				// ----------------7/23
 						
 				//end 判斷dnum
 															
@@ -290,6 +258,27 @@ $(function(){
 						}	
 			 });
 		}
+		
+		/*
+		function money(){
+			$.ajax({
+				
+				url:".money.php",
+                type: "GET",
+                datatype: "html",
+				async:false,
+				data: {type:"cash"},
+				success:
+					function(str){
+					alert('123');
+					var currentcash = str;
+						document.getElementById("money").innerHTML = parseInt(str) ;
+						
+					}
+			});
+		}
+		*/
+		
 		//有聘僱研發人員才可研發
 		function checkrd_emp(){
 			 $.ajax({
@@ -514,8 +503,9 @@ $(function(){
       <td width="12%"> 公司帳號： <strong><font color=#ff6><?php echo $cid[0];?></font></strong></td>
       <td width="14%"> 公司名稱： <strong><font color=#ff6><?php echo $cname;?></font></strong></td>
       <td width="14%"> 個人帳號：<strong><font color=#ff6><?php echo $acc;?> </font></strong></td>
-      <td width="36%">資金:<strong><font color=#ff6><?php echo $cash;?> </font></strong></td>
-      <td width="14%">倒數： <strong><font color=#ff6><span id="lefttime"></span></font></strong></td>
+   <td width="36%">資金:<strong><font color=#ff6><?php echo $cash;?> </font></strong></td>     
+     <!-- <td width="36%">資金:<strong><font color=#ff6><span id="money"></span></font></strong></td>  -->
+     <td width="14%">倒數： <strong><font color=#ff6><span id="lefttime"></span></font></strong></td>
       <td width="6%" align="right" title="logout"><img src="images/logout.png" width="32" height="32" onclick="logout()"/></td>
       <td width="1%"></td>
 
@@ -563,7 +553,7 @@ $(function(){
  <li><a href="#" class="arrow" target="_self">價值作業</a>
     <ul id="subMgm" class="second-menu">
 		<li><a href="#" onclick="check_authority(8,0)">流程改良</a></li>
-        <li><a href="#" onclick="check_authority(9,0)">產品功能</a></li>
+        
         <li><a href="#" onclick="check_authority(10,0)">生產規劃</a></li>
     </ul>
  </li> 
@@ -577,6 +567,7 @@ $(function(){
  <li><a href="#" class="arrow" target="_self">市場聚焦</a>
     <ul id="subMgm" class="second-menu">
       	<li><a href="#"  onclick="check_authority(14,0)">廣告促銷</a></li>
+		<li><a href="#" onclick="check_authority(9,0)">產品功能</a></li>
       	<li><a href="#" onclick="check_authority(15,0)">接單</a></li>
       	<!--<li><a href="#" onclick="check_authority(16,0)">通路商</a></li>-->
  	  	<li><a href="#" class="arrow" target="_self">市場狀態</a>

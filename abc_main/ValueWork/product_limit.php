@@ -23,7 +23,7 @@
     $temp=mysql_query("SELECT `efficiency` FROM `current_people` WHERE `cid`='$cid' AND `year`=$year AND `month`=$month AND `department`='equip';",$connect);
     $result=  mysql_fetch_array($temp);
     
-    $equip_product_add = ($equip_level+$equip_satisfaction)*0.1+1;
+    $equip_product_add = ($equip_level+$equip_satisfaction)*0.01+1;
     
     if($result[0]*$equip_product_add>60)
         $basis=5+$basis;

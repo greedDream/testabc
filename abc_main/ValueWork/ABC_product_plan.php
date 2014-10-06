@@ -3,16 +3,16 @@
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="JavaScript" src="../js/wz_jsgraphics.js"></script>
+       <!-- <script language="JavaScript" src="../js/wz_jsgraphics.js"></script> --> 
         <script type="text/javascript" src="../js/jsAnim.js"></script>
         <script type="text/javascript" src="../js/jquery.js"></script>
         <script type='text/javascript' src="../js/tooltip.js"></script>
-        <script src="jquery.cluetip.js" type="text/javascript"></script>
+        <!-- <script src="jquery.cluetip.js" type="text/javascript"></script> -->
         <script type="text/javascript" src="../js/jquery.query.js"></script>
         <script type="text/javascript" src="../js/jquery.cookie.js"></script>
         <script type="text/javascript" src="../js/tinybox.js"></script>
         <link rel="stylesheet" href="../css/style.css"/>
-        <link rel="stylesheet" href="../css/jquery.cluetip.css" type="text/css" />
+        <link rel="stylesheet" href="../css/jquery.cluetip.css" type="text/css" />   
     </head>
     <body class="noscript">
     	<?php
@@ -326,8 +326,8 @@
                     type: "GET",
                     datatype: "html",
                     data: "option=fix_cost&type=pp&monitor="+count1+"&kernel="+count2+"&keyboard="+count3+"&cut="+count4+"&combine1="+count5+"&check_s="+count6+"&combine2="+count7+"&check="+count8,
-                    success: function(str){
-                        cost=str.split(";");
+                    success: function(str){ 
+                        cost=str.split(";");  
                         document.getElementById("costA").textContent=cost[1];
                         document.getElementById("costB").textContent=cost[0];
                     }

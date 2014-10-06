@@ -15,7 +15,7 @@
 		if(($_GET['type'])=="pp"){
 			$result=mysql_query("SELECT * FROM `product_plan` WHERE `year`=$year AND `month`=$month AND `cid`='$cid'",$connect);
 			$temp=mysql_fetch_array($result);
-			$reply=$temp['monitor'].":".$temp['kernel'].":".$temp['keyboard'].":".$temp['cut'].":".$temp['combine1'].":".$temp['check_s'].":".$temp['combine2'].":".$temp['check'];
+			$reply=$temp[3].":".$temp[4].":".$temp[5].":".$temp[8].":".$temp[9].":".$temp[6].":".$temp[10].":".$temp[7];
 			echo $reply;
 		}
 		if(($_GET['type'])=="B"){

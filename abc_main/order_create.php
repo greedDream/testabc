@@ -61,6 +61,9 @@
 			$arr['quantity'] = 301;
 		}
         $quantity=rand(($arr['quantity']-300)/10,($arr['quantity']+300)/10)*10;
+		if($quantity <= 300){
+		  $quantity=310;
+		}
         mysql_query("INSERT INTO `order_detail` VALUES ($index,$year,$month,'$order_no','$type','$name',$quality,$service,$quantity,1,3)",$connect);
         $index++;
     }
@@ -82,7 +85,10 @@
 			$arr['quantity'] = 301;
 		}
         $quantity=rand(($arr['quantity']-300)/10,($arr['quantity']+300)/10)*10;
-        mysql_query("INSERT INTO `order_detail` VALUES ($index,$year,$month,'$order_no','$type','$name',$quality,$service,$quantity,0,5)",$connect);
+        if($quantity <= 300){
+		  $quantity=310;
+		}
+		mysql_query("INSERT INTO `order_detail` VALUES ($index,$year,$month,'$order_no','$type','$name',$quality,$service,$quantity,0,5)",$connect);
         $index++;
     }
 ?>

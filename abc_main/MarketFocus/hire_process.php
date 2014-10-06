@@ -132,6 +132,12 @@ if (!strcmp($_GET['type'], "finan")) {
             }
         }
     }
+	
+	$temp = mysql_query("SELECT SUM(`level`) FROM `relationship_decision` WHERE `cid`='$cid' AND `year`=$year AND `month`=$month AND `target`='sale';",$connect);
+    $result = mysql_fetch_array($temp);
+    $sale_level = $result[0];
+	
+	
     $num = $hire_count - $fire_count;
 	$result = mysql_query("SELECT `efficiency` FROM `current_people` WHERE `year`=$year AND `month`=$month AND `cid`='$cid' AND `department`='sale'",$connect);
 	$temp = mysql_fetch_array($result);

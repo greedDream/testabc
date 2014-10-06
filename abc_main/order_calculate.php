@@ -73,7 +73,7 @@
                 list($quality_focus,$service_focus)=split(':',$result_2[0]);
 
                 $temp_rank=$result['quality'];
-                $temp_1=mysql_query("SELECT `batch`,`quality` FROM `product_quality` WHERE `cid`='$company' AND `product`='$type[1]' AND `rank`>=$temp_rank ORDER BY `rank` DESC;");
+                $temp_1=mysql_query("SELECT `batch`,`quality` FROM `product_quality` WHERE `cid`='$company' AND `product`='$type[1]' AND `rank`<=$temp_rank ORDER BY `rank` DESC;");
                 while($result_3=mysql_fetch_array($temp_1)){
                     print_r($result_3);
                     if($result_3['batch']>=$quantity_temp){//產品較多
@@ -123,8 +123,8 @@
             $customer_temp=mysql_query("SELECT * FROM `customer_satisfaction` WHERE `cid`='$company_name' AND `customer`='$customer_name'");
             $customer_result=mysql_fetch_array($customer_temp);
             $customer_result=$customer_result['satisfaction'];
-            $temp_final=mysql_query("SELECT * FROM `product_quality` WHERE `cid`='$company_name' AND `product`='$type[1]' AND `rank`>=$rank ORDER BY `rank` DESC;");
-			echo "SELECT * FROM `product_quality` WHERE `cid`='$company_name' AND `product`='$type[1]' AND `rank`>=$rank ORDER BY `rank` DESC;<br/>";
+            $temp_final=mysql_query("SELECT * FROM `product_quality` WHERE `cid`='$company_name' AND `product`='$type[1]' AND `rank`<=$rank ORDER BY `rank` DESC;");
+			echo "SELECT * FROM `product_quality` WHERE `cid`='$company_name' AND `product`='$type[1]' AND `rank`<=$rank ORDER BY `rank` DESC;<br/>";
 
             while($result_final=mysql_fetch_array($temp_final)){
                 $index=$result_final['index'];
@@ -184,100 +184,43 @@
                 $customer_result+=1.1*($quality_temp-$correspond[$rank]);
             else if($rank==5)
                 $customer_result+=0.5*($quality_temp-$correspond[$rank]);
-
+			//產品差異化→產品提升→顧客滿意度↑
+			$last=0;
+            $now=($year-1)*12+$month; 
+            $result_temp=mysql_query("SELECT year,month FROM `order_accept` WHERE `cid` = '$company_name' AND `customer`='$customer_name' AND `order_no` Like '%$type[1]'");
+            while($result=mysql_fetch_array($result_temp)){
+            	$last_temp=($result[0]-1)*12+$result[1];   
+            	if($last_temp>$last&&$last_temp!=$now){
+            		$last=$last_temp;
+            	}
+            }            
+            $last_year=$last/12+1;    
+            $last_month=$last%12;
+            if($last_month==0){
+            	$last_year-=1;
+            	$last_month=12;
+            }     
+            if($type[1]=="A"){
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `donate` WHERE `cid` = '$company_name' AND (`year`>'$last_year' OR (`year`='$last_year' AND `month`>'$last_month'))");
+            	$temp=mysql_fetch_array($result);      
+            	$differentiation_A=$temp[0]+$temp[1]+$temp[2];  //總共有幾顆星(要排除上次已計算過的)
+           		/*$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `donate` WHERE `cid` = '$company_name' AND `year`='$last_year' AND `month`>$last_month");
+            	$temp=mysql_fetch_array($result);
+            	$differentiation_A+=$temp[0]+$temp[1]+$temp[2];  //總共有幾顆星(要加上上次當年度當月以後的)*/
+            	$customer_result+=0.01*$differentiation_A+$last_month*100;
+            }
+            else if($type[1]=="B"){   //暫時用原本的table
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share` WHERE `cid` = '$company_name' AND `year`>'$last_year'");
+            	$temp=mysql_fetch_array($result);
+            	$differentiation_B=$temp[0]+$temp[1]+$temp[2];
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share` WHERE `cid` = '$company_name' AND `year`='$last_year' AND `month`>'$last_month'");
+            	$temp=mysql_fetch_array($result);
+            	$differentiation_B+=$temp[0]+$temp[1]+$temp[2];
+            	$customer_result+=0.01*$differentiation_B;
+            }			
             mysql_query("UPDATE `customer_satisfaction` SET `satisfaction` = $customer_result WHERE `cid` = '$company_name' AND `customer`='$customer_name'");
 
         }
-        //營收計算
-        /*$temp_result=mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='bad_debt_A'");     //壞帳機率_等級一
-        $A_num=mysql_fetch_array($temp_result);
-        $A_num=$A_num[0];
-
-        $temp_result=mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='bad_debt_B'");     //壞帳機率_等級二
-        $B_num=mysql_fetch_array($temp_result);
-        $B_num=$B_num[0];
-
-        $temp_result=mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='bad_debt_C'");     //壞帳機率_等級三
-        $C_num=mysql_fetch_array($temp_result);
-        $C_num=$C_num[0];
-
-        $bad_debt_A=array();
-        for($i=0;$i<$A_num;$i++){
-            while(true){
-                $temp=rand()%100;
-                if(!in_array($temp,$bad_debt_A)){
-                    array_unshift($bad_debt_A,$temp);
-                    break;
-                }
-            }
-        }
-
-        echo "<br>";
-        print_r($bad_debt_A);
-
-        $bad_debt_B=array();
-        for($i=0;$i<$B_num;$i++){
-            while(true){
-                $temp=rand()%100;
-                if(!in_array($temp,$bad_debt_B)){
-                    array_unshift($bad_debt_B,$temp);
-                    break;
-                }
-            }
-        }
-
-        echo "<br>";
-        print_r($bad_debt_B);
-
-        $bad_debt_C=array();
-        for($i=0;$i<$C_num;$i++){
-            while(true){
-                $temp=rand()%100;
-                if(!in_array($temp,$bad_debt_C)){
-                    array_unshift($bad_debt_C,$temp);
-                    break;
-                }
-            }
-        }
-
-        echo "<br>";
-        print_r($bad_debt_C);
-
-        $temp_result=mysql_query("SELECT * FROM `state` WHERE `year`=$year AND `month`=$month");
-        $company_reference=array();
-        while($temp=mysql_fetch_array($temp_result)){
-            array_unshift($company_reference,$temp['cid']);
-        }
-
-        print_r($company_reference);
-
-        $temp_result=mysql_query("SELECT * FROM `order_accept` WHERE `accept`=1");
-        while($result=mysql_fetch_array($temp_result)){
-            if($result['b_or_c']=='1'){
-                $temp=array_search($result['cid'],$company_reference);
-                if($result['type']=="A"){
-                    if(in_array($temp,$bad_debt_A))
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."產生壞帳~!!<br>";
-                    else
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."所獲得的總營收為 => ".$result['price']*$result['quantity']."元"."<br>";
-                }
-                if($result['type']=="B"){
-                    if(in_array($temp,$bad_debt_B))
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."產生壞帳~!!<br>";
-                    else
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."所獲得的總營收為 => ".$result['price']*$result['quantity']."元"."<br>";
-                }
-                if($result['type']=="C"){
-                    if(in_array($temp,$bad_debt_C))
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."產生壞帳~!!<br>";
-                    else
-                        echo $result['cid']."經由訂單編號為".$result['order_no']."所獲得的總營收為 => ".$result['price']*$result['quantity']."元"."<br>";
-                }
-            }
-            else{
-                echo $result['cid']."經由訂單編號為".$result['order_no']."所獲得的總營收為 => ".$result['price']*$result['quantity']."元"."<br>";
-            }
-        }*/
     }
     $temp=mysql_query("SELECT `customer`,`cid` FROM `order_accept` WHERE `accept`=0 AND $year AND `month`=$month");
     while($result=  mysql_fetch_array($temp)){

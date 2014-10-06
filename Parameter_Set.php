@@ -1,10 +1,7 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <?php
-
-	error_reporting(E_ALL ^ E_DEPRECATED);
-
 	$connect = mysql_connect("localhost", "root", "53g4ek7abc") or die(mysql_error());
 	mysql_select_db("testabc_main", $connect);
 	
@@ -48,23 +45,23 @@
 	$array = mysql_fetch_array($temp);
 	$housing_cost = $array[0];
 	
-	$temp = mysql_query("Select `value` From `parameter_description` where `name`='finance_salary' ",$connect);
+	$temp = mysql_query("Select `money2` From `correspondence` where `name`='current_people' ",$connect);
 	$array = mysql_fetch_array($temp);
 	$finance_salary = $array[0];
 	
-	$temp = mysql_query("Select `value` From `parameter_description` where `name`='sale_salary' ",$connect);
+	$temp = mysql_query("Select `money` From `correspondence` where `name`='current_people_2' ",$connect);
 	$array = mysql_fetch_array($temp);
 	$sale_salary = $array[0];
 	
-	$temp = mysql_query("Select `value` From `parameter_description` where `name`='research_salary' ",$connect);
+	$temp = mysql_query("Select `money3` From `correspondence` where `name`='current_people_2' ",$connect);
 	$array = mysql_fetch_array($temp);
 	$research_salary = $array[0];
 	
-	$temp = mysql_query("Select `value` From `parameter_description` where `name`='human_salary' ",$connect);
+	$temp = mysql_query("Select `money2` From `correspondence` where `name`='current_people_2' ",$connect);
 	$array = mysql_fetch_array($temp);
 	$human_salary = $array[0];
 	
-	$temp = mysql_query("Select `value` From `parameter_description` where `name`='equip_salary' ",$connect);
+	$temp = mysql_query("Select `money3` From `correspondence` where `name`='current_people' ",$connect);
 	$array = mysql_fetch_array($temp);
 	$equip_salary = $array[0];
 	

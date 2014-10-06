@@ -169,7 +169,43 @@
                 $customer_result+=1.1*($quality_temp-$correspond[$rank]);
             else if($rank==5)
                 $customer_result+=0.5*($quality_temp-$correspond[$rank]);
-
+			
+			//產品差異化→產品提升→顧客滿意度↑
+            /*$result=mysql_query("SELECT MAX(`month`) FROM `order_accept` WHERE `year`='$last_year' AND `cid` = '$company_name' AND `month`<'$month'");
+            $temp=mysql_fetch_array($result);  //本次以前的最近一次接此公司訂單的月
+            if(empty($temp[0])){   //今年本月以前未接此顧客訂單
+             	$result=mysql_query("SELECT MAX(`year`) FROM `order_accept` WHERE `year`<'$last_year' AND `cid` = '$company_name'");
+             	$temp=mysql_fetch_array($result);  //往前年開始找
+             	if($last_year=$temp[0]){
+             		$result=mysql_query("SELECT MAX(`month`) FROM `order_accept` WHERE `year`='$last_year' AND `cid` = '$company_name'");
+             		$temp=mysql_fetch_array($result);
+             		$last_month=$temp[0];
+             	}
+             	else{   //以前未接過此顧客訂單
+             		$last_year=0;
+             		$last_month=0;
+             	}
+            }
+             else{
+             	$last_year=$year;
+             	$last_month=$temp[0];
+            }	*/
+            if($type[1]=="A"){
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `donate` WHERE `cid` = '$company_name'");
+            	$temp=mysql_fetch_array($result);
+            	$last_year=$temp[0]+$temp[1]+$temp[2];  //總共有幾顆星(要排除上次以計算過的)
+           		$customer_result+=1*$differentiation_A;
+            }
+            else if($type[1]=="B"){   //暫時用原本的table
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share` WHERE `cid` = '$company_name'");
+            	$temp=mysql_fetch_array($result);
+            	$differentiation_B=$temp[0]+$temp[1]+$temp[2];
+            	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share2` WHERE `cid` = '$company_name'");
+            	$temp=mysql_fetch_array($result);
+            	$differentiation_B+=$temp[0]+$temp[1]+$temp[2];
+            	$customer_result+=0.01*$differentiation_B;
+            }
+			
             mysql_query("UPDATE `customer_satisfaction` SET `satisfaction` = $customer_result WHERE `cid` = '$company_name' AND `customer`='$customer_name'",$connect);
 
         }

@@ -105,20 +105,36 @@ while ($company = mysql_fetch_array($getcid)) {
 	echo "d_long=".$d_long.", d_short=".$d_short.", d=".$d.", right=".$right.", d/ic=".$d_ic."@";
     mysql_query("UPDATE `fund_raising` SET `d_ic`='$d_ic',`interest`='$interest',`long_interest`='$long_interest',`short_interest`='$short_interest',`long_repay`='$long_pay',`short_repay`='$short_pay' WHERE `year`=$year_bf AND `month`=$month_bf AND `cid`='$CompanyID'", $connect);
 	
-    //set this month
+    //set the short_payment
 	$compare = ($year - 1) * 12 + $month;
     $fund = mysql_query("SELECT * FROM `fund_raising` WHERE `cid`='$CompanyID'", $connect);
     while ($row = mysql_fetch_array($fund)) {
         if ((((int) $row['year'] - 1) * 12 + (int) $row['month']) < $compare) {
-            if ($row['short'] != 0) {
-                if (($compare - (((int) $row['year'] - 1) * 12 + (int) $row['month'])) == 4) {
+            
+			if ($row['short'] != 0) {
+                if (($compare - (((int) $row['year'] - 1) * 12 + (int) $row['month'])) == 6) {
                     $payment = (int) $row['short'];
 					break;
                 }
             }
+			/*
+			if ($row['long'] != 0) {
+				if (($compare - (((int) $row['year'] -1 * 12 + (int) $row['month'])) == 24) {				
+					$payment_long = (int) $row['long'];
+					break;
+				}
+			}
+			*/
 		}
     }
+	    
+	//set the long_payment 
+	
 	echo $CompanyID;
-    mysql_query("UPDATE `fund_raising` SET `repay2`='$payment' WHERE `year`=$year AND `month`=$month AND `cid`='$CompanyID'", $connect);
+	mysql_query("UPDATE `fund_raising` SET `repay2`='$payment' WHERE `year`=$year AND `month`=$month AND `cid`='$CompanyID'", $connect);
+    mysql_query("UPDATE `fund_raising` SET `repay`='$payment_long' WHERE `year`=$year AND `month`=$month AND `cid`='$CompanyID'", $connect);
+	
+	
+	
 }
 ?>

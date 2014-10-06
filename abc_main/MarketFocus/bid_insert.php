@@ -29,5 +29,7 @@
         $quantity=$result['7'];
         mysql_query("INSERT INTO `order_accept` VALUES ($index,$year,$month,'$cid','$type','$name','$order_no',$quality,$service,$price,$quantity,$b_or_c,0);",$connect) or die(mysql_error());
         $index++;
+        echo "success";
+    
     }
 ?>

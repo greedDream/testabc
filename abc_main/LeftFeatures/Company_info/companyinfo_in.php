@@ -36,7 +36,6 @@ $thisround=($year-1)*12+$month;
 	$lia_now = 0;
     $cash = 0;
     $stock = 0;
-    $stock_price =0;
     $result = mysql_query("SELECT * FROM `fund_raising` WHERE `cid`='$cid' ORDER BY `year`, `month`");
     while ($row = mysql_fetch_array($result)) {
         $compare = ((integer) $row['year'] - 1) * 12 + (integer) $row['month'];
@@ -51,37 +50,32 @@ $thisround=($year-1)*12+$month;
     $row = mysql_fetch_row($result);
 	$outside_stock = $row[0];
     $stock = $my_stock + $outside_stock;  //股數
-    
-    $result = mysql_query("SELECT `stock_price` FROM `stock` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
+	    $result = mysql_query("SELECT `stock_price` FROM `stock` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
     $row = mysql_fetch_row($result);
     $stock_price = $row[0];
-    
+	
     $result = mysql_query("SELECT `cash` FROM `cash` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
     $row = mysql_fetch_row($result);
     $cash = (int) $row[0];  //現金
-	
-    
-    
+
      //員工數目
     $number_equip = 0;
     $number_finance = 0;
     $number_human = 0;
     $number_research = 0;
     $number_sale = 0;
-    $people = mysql_query("SELECT * FROM current_people WHERE `cid`='$cid' AND (`year`-1)*12+`month`< $thisround");
-    while ($row = mysql_fetch_array($people)) {
-        if ($row['department'] == "equip") {
-            $number_equip = $number_equip + (int) $row['hire_count'] - (int) $row['fire_count'];
-        } elseif ($row['department'] == "finance") {
-            $number_finance = $number_finance + (int) $row['hire_count'] - (int) $row['fire_count'];
-        } elseif ($row['department'] == "human") {
-            $number_human = $number_human + (int) $row['hire_count'] - (int) $row['fire_count'];
-        } elseif ($row['department'] == "research") {
-            $number_research = $number_research + (int) $row['hire_count'] - (int) $row['fire_count'];
-        } elseif ($row['department'] == "sale") {
-            $number_sale = $number_sale + (int) $row['hire_count'] - (int) $row['fire_count'];
-        }
-    }
+    $rdpeople = mysql_fetch_array(mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM current_people WHERE cid = '".$cid."' AND department='research' AND (`year`-1)*12+`month`< $thisround"));
+    $number_research = $rdpeople[0]-$rdpeople[1];
+    $fnpeople = mysql_fetch_array(mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM current_people WHERE cid = '".$cid."' AND department='finance' AND (`year`-1)*12+`month`< $thisround"));
+    $number_finance = $fnpeople[0]-$fnpeople[1];
+    $salepeople = mysql_fetch_array(mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM current_people WHERE cid = '".$cid."' AND department='sale' AND (`year`-1)*12+`month`< $thisround"));
+    $number_sale = $salepeople[0]-$salepeople[1];
+    $equippeople = mysql_fetch_array(mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM current_people WHERE cid = '".$cid."' AND department='equip' AND (`year`-1)*12+`month`< $thisround"));
+    $number_equip = $equippeople[0]-$equippeople[1];
+    $humanpeople = mysql_fetch_array(mysql_query("SELECT SUM(`hire_count`),SUM(`fire_count`) FROM current_people WHERE cid = '".$cid."' AND department='human' AND (`year`-1)*12+`month`< $thisround"));
+    $number_human = $humanpeople[0]-$humanpeople[1];
+	
+	
     $satisfaction_equip = 0;
     $satisfaction_finance = 0;
     $satisfaction_human = 0;
@@ -321,9 +315,9 @@ FROM `product_b` WHERE `cid`='$cid' AND (`year`-1)*12+`month`<$thisround");// AN
     
     </tr>
 	</table>
-<iframe width='802' height='900'  scrolling='yes' frameborder='0' align='center'  src='./stockprice_lineChart.html'></iframe>
 </div>
 </li>
+
 
 <li style="display: none;">
 <div>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
         <title></title>
@@ -947,7 +947,7 @@
                         success: function(str){
                             //alert("Success!");
 						//journal()
-                            //alert(relationship+"success!!"+str);
+                            alert(relationship+"success!!"+str);
                         }
                     });//*/
                     alert("SUCCESS~!!");
@@ -1318,7 +1318,7 @@
                  <table class="table1" width="60%">
                 <thead>
                 	<tr>
-                    	<td>供應商回扣</td>
+                    	<td>供應商分紅</td>
                     </tr>
                     <tr>
 					    <th width="18%"></th>

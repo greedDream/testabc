@@ -1,12 +1,10 @@
-﻿<?php session_start(); ?>
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>無標題文件</title>
         <?php 
-		error_reporting(E_ALL ^ E_DEPRECATED);
-
 			include("../connMysql.php");
 			if (!@mysql_select_db("testabc_main")) die("資料庫選擇失敗!");
 			mysql_query("set names 'utf8'");
@@ -14,14 +12,11 @@
 			$year=$_SESSION['year'];
 			$month=$_SESSION['month'];
 			$round=$month+($year-1)*12;
-		
-		
-			$name_arr = array("finance_salary" => 0 , "equip_salary" => 0 , "sale_salary" => 0 , "human_salary" => 0 , "research_salary" => 0);
-			foreach($name_arr as $name => $value){
-				$temp = mysql_query("SELECT `value` FROM `parameter_description` WHERE `name`='$name'");
-				$result = mysql_fetch_array($temp);
-				$salary_arr[$name] = $result[0];
-			}
+
+			$correspondence=mysql_query("SELECT * FROM correspondence WHERE `name`='current_people'");
+			$correspond=mysql_fetch_array($correspondence);			
+			$correspondence = mysql_query("SELECT * FROM correspondence WHERE `name`='current_people_2'");
+			$correspond2 = mysql_fetch_array($correspondence);			
 			
 		?>
 		<link href="../css/smart_tab.css" rel="stylesheet" type="text/css">
@@ -39,6 +34,7 @@
 					url:"human_resource.php",
 					type: "GET",
 					datatype: "html",
+					async:false,
 					data: {type:"fire_money"},
 					success: function(str){
 						if(str!="::")
@@ -55,6 +51,7 @@
 					url:"human_resource.php",
 					type: "GET",
 					datatype: "html",
+					async:false,
 					data: {type:"hire_money"},
 					success: function(str){
 						var word=str.split(":");
@@ -141,6 +138,7 @@
                     url:"human_resource.php",
                     type: "GET",
                     datatype: "html",
+					async:false,
                     data: {type:"research"},
                     success: function(str){
 						//alert(str);
@@ -148,18 +146,12 @@
                        	current_r=parseInt(arr[0]);
                         r_hcount=parseInt(arr[1]);
                         r_fcount=parseInt(arr[2]);
-						/*var year=arr[3];
-						var month=arr[4];
-						if(year=1 && month=1) get_rd disabled
-						show current member number*/
+
 						document.getElementById("has_rd_team").innerHTML=current_r;
 						document.getElementById("has_rd_team1").innerHTML=current_r;
 						document.getElementById("rd_thismonth").innerHTML=r_hcount;
 						document.getElementById("rd_thismonth1").innerHTML=r_fcount;
-						/*if(year==1 && month==1){
-							document.getElementById("get_rd_team").disabled=true;
-							document.getElementById("get_rd_team1").disabled=true;
-						}*/ 
+
 					}
                 });	
 				
@@ -377,34 +369,34 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">財務人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['finance_salary']); ?> / 月</font></th>
+                    <th scope="row">財務人員<br><font size="-1" color="#666">$<?php echo number_format($correspond['money2']); ?> / 月</font></th>
                     <td><span id="has_fn_member"></span></td>
                     <td><span id="get_fn_member_cost"> </span> / 1人</td>
                     <td><span id="fn_thismonth"></span></td>
                     <td><input id="get_fn_member" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 <tr>
-                    <th scope="row">運籌人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['equip_salary']); ?> / 月</font></th>
+                    <th scope="row">運籌人員<br><font size="-1" color="#666">$<?php echo number_format($correspond['money3']); ?> / 月</font></th>
                     <td><span id="has_rs_member"> </span></td>
                     <td><span id="get_rs_member_cost"> </span> / 1人</td>
                     <td><span id="rs_thismonth"></span></td>
                     <td><input id="get_rs_member" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">行銷與業務人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['sale_salary']); ?> / 月</font></th>
+                    <th scope="row">行銷與業務人員<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money']); ?> / 月</font></th>
                     <td><span id="has_ss_member"> </span></td>
                     <td><span id="get_ss_member_cost"> </span> / 1人</td>
                     <td><span id="ss_thismonth"></span></td>
                     <td><input id="get_ss_member" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">行政人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['human_salary']); ?> / 月</font></th>
+                    <th scope="row">行政人員<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money2']); ?> / 月</font></th>
                     <td><span id="has_ex_member"> </span></td>
                     <td><span id="get_ex_member_cost"> </span> / 1人</td>
                     <td><span id="ex_thismonth"></span></td>
                     <td><input id="get_ex_member" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">研發團隊<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['equip_salary']*5); ?> / 月</font></th>
+                    <th scope="row">研發團隊<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money3']*5); ?> / 月</font></th>
                     <td><span id="has_rd_team"> </span></td>
                     <td><span id="get_rd_team_cost"> </span> / 5人</td>
                     <td><span id="rd_thismonth"></span></td>
@@ -435,7 +427,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">財務人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['finance_salary']); ?> / 月</font></th>
+                    <th scope="row">財務人員<br><font size="-1" color="#666">$<?php echo number_format($correspond['money2']); ?> / 月</font></th>
                     <td><span id="has_fn_member1"></span></td>
                     <td><span id="get_fn_member_cost1"></span> / 1人</td>
                     <td><span  id="fn_thismonth1"></span></td>
@@ -443,28 +435,28 @@
                     <!--<td rowspan="5" width="30%"><a title="運籌與生產部門的人會隨著生產線的購買而配置。其他部門人數的多寡決定該部門營收的負荷量。聘僱員工太少的部門會成為瓶頸。資遣員工須支付<b><font color=#FF3030>三個月薪資</font></b>資遣費用。"><img  width="100%" src="images/guide.png"></a></td>
                 </tr>-->
                 <tr>
-                    <th scope="row">運籌人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['equip_salary']); ?> / 月</font></th>
+                    <th scope="row">運籌人員<br><font size="-1" color="#666">$<?php echo number_format($correspond['money3']); ?> / 月</font></th>
                     <td><span id="has_rs_member1"></span></td>
                     <td><span id="get_rs_member_cost1"></span> / 1人</td>
                    <td><span  id="rs_thismonth1"></span></td>
                     <td><input id="get_rs_member1" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">行銷與業務人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['sale_salary']); ?> / 月</font></th>
+                    <th scope="row">行銷與業務人員<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money']); ?> / 月</font></th>
                     <td><span id="has_ss_member1" ></span></td>
                     <td><span id="get_ss_member_cost1"></span> / 1人</td>
                     <td><span  id="ss_thismonth1"></span></td>
                     <td><input id="get_ss_member1" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">行政人員<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['human_salary']); ?> / 月</font></th>
+                    <th scope="row">行政人員<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money2']); ?> / 月</font></th>
                     <td><span id="has_ex_member1"></span></td>
                     <td><span id="get_ex_member_cost1"></span> / 1人</td>
                     <td><span  id="ex_thismonth1"></span></td>
                     <td><input id="get_ex_member1" class="grayTips" onChange="change()" size="3px" style="text-align:right"> 人</td>
                 </tr>
                 <tr>
-                    <th scope="row">研發團隊<br><font size="-1" color="#666">$<?php echo number_format($salary_arr['equip_salary']*5); ?> / 月</font></th>
+                    <th scope="row">研發團隊<br><font size="-1" color="#666">$<?php echo number_format($correspond2['money3']*5); ?> / 月</font></th>
                     <td><span id="has_rd_team1"></span></td>
                     <td><span id="get_rd_team_cost1"></span> / 5人</td>
                     <td><span  id="rd_thismonth1"></span></td>
