@@ -8,7 +8,7 @@
         <script type="text/javascript" src="../js/jquery.smartTab.js"></script>
         <link rel="stylesheet" href="../css/style.css"/>
         <script type="text/javascript">
-            var now_cumlia=0,sto_now=0;
+            var now_cumlia=0,sto_now=0,treasurystock=0;
             var debit_now=0.0;
             var price01=0,price02=0,price03=0,price04=0,price05=0,price06=0;
             var clickable=0;
@@ -44,23 +44,30 @@
                         //alert(str);
 						
 						now_can_debt=parseInt(row[12]);
-						document.getElementById("can_loan").innerHTML=addCommas(now_can_debt);
-						document.getElementById("buyable_stock").innerHTML=addCommas(price06);
+						treasurystock=parseInt(row[13]);
+
 						
                        	now_cumlia=parseInt(row[0]);
                         sto_now=parseInt(row[9]);
                         price06=parseInt(row[10]);
 						now_fund=parseInt(row[11]);
 						check_lia=parseInt(row[1]);
+
+						stock_now=price06+sto_now;
+						
 						document.getElementById("now_fund").innerHTML=addCommas(now_fund);
                         document.getElementById("cum_lia").innerHTML=row[0];
-                        document.getElementById("has_stock").innerHTML=addCommas(sto_now);
+                        document.getElementById("has_stock").innerHTML=addCommas(treasurystock);
                         document.getElementById("now_liaper").innerHTML=row[1]+"%";
                         document.getElementById("pre_liaper").innerHTML=row[8];
                         document.getElementById("ref_stockp").innerHTML=parseFloat(row[2]);
-						document.getElementById("outside_stock").innerHTML=addCommas(price06);
-						
-						
+						document.getElementById("outside_stock").innerHTML=addCommas(stock_now);
+
+						document.getElementById("company_stock").innerHTML =addCommas(sto_now);
+						document.getElementById("market_stock").innerHTML =addCommas(price06);
+
+						document.getElementById("can_loan").innerHTML=addCommas(now_can_debt);
+					//	document.getElementById("buyable_stock").innerHTML=addCommas(treasurystock);			
 						
                         if(row[3]!="")
                             document.getElementById("get_fundraise").innerHTML=parseFloat(row[3]);
@@ -150,7 +157,8 @@
 					var payback=document.getElementById("payback_longlia").value;
 					//var canbuy=parseInt(document.getElementById("buyable_stock").innerHTML.replace(/\,/g,''));
 					var buystock=document.getElementById("buyback_stock").value;
-					var fr=new Array(get_cash1,get_cash2,short,long,payback,buystock);
+					var sellstock=document.getElementById("sell_stock").value;
+					var fr=new Array(get_cash1,get_cash2,short,long,payback,buystock,sellstock);
 					
 					
 					for(var i=0; i<fr.length; i++){
@@ -177,7 +185,8 @@
                        		 type: "GET",
                       	 	 datatype: "html",
                         	 data: {type:"update",decision1:fr[2],decision2:fr[3],decision3:fr[4],
-											      decision4:fr[0],decision5:fr[1],decision6:fr[5]},
+											      decision4:fr[0],decision5:fr[1],decision6:fr[5],
+											      decision7:fr[6]},
                        		 success: function(str){
 								 //alert(str);
                            		 alert("Success!");
@@ -349,17 +358,30 @@
                 </tr>   
             </thead>
             <tbody>
-             	<tr>
-                    <th scope="row" style="height:45px">公司所持股數</th>
-                    <td><span id="has_stock"></span></td>
-                </tr>
+
                 <tr>
-                    <th scope="row" style="height:45px">在外流通股數</th>
-                    <td><span id="outside_stock"></span></td>
+                    <th scope="row" COLSPAN=2 style="height:45px">在外流通股數</th>
+                    <td ><span id="outside_stock"></span></td>
+                    	<tr>
+						<td></td>
+						<th scope="row" style="height:45px">公司派</th>
+                    	<td><span id="company_stock"></span></td>
+                    	</tr>
+                    	<tr>
+						<td></td>
+                    	<th scope="row" style="height:45px">市場派</th>
+                    	<td><span id="market_stock"></span></td>
+                    	</tr>	
                 </tr>
+                <!--  
                 <tr>
                     <th scope="row" style="height:45px">庫藏股</th>
                     <td><span id="buyable_stock"></span></td>
+                </tr>
+                -->
+				             	<tr>
+                    <th scope="row" style="height:45px">庫藏股</th>
+                    <td><span id="has_stock"></span></td>
                 </tr>
                 <tr>
                     <th scope="row" style="height:45px">買回庫藏股</th>

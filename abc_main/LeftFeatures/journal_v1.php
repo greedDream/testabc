@@ -30,12 +30,12 @@ function report($month) {
         "start_cash" => "普通股", "break_contract" => "現金", "interest" => "現金", "cash_increase" => "普通股", "relationship_s" => "現金", 
         "relationship_e" => "現金", "relationship_i" => "現金", "dividend" => "現金", "depreciation" => "累計折舊", "AR" => "應收帳款", "AP" => "現金", "treasury" => "現金"); //會計科目對照(貸)
 
-    $catalog = array("current_people" => "團隊學習", "share" => "價值關係", "share2" => "價值關係", "donate" => "價值關係",
-        "ad_a" => "市場聚焦", "ad_b" => "市場聚焦", "purchase_materials" => "價值作業", "purchase_machine" => "資源整合", "sell_machine" => "資源整合", 
-        "product_a" => "價值作業", "product_b" => "價值作業", "process_improvement" => "價值作業", "product_plan" => "價值作業",
-        "r_d" => "資源整合", "training" => "團隊學習", "long" => "資源整合", "short" => "資源整合", "repay" => "資源整合", "repay2" => "資源整合", "storage" => "非決策", 
-        "start_cash" => "非決策", "break_contract" => "資源整合", "interest" => "非決策", "cash_increase" => "資源整合", "relationship_s" => "價值關係", 
-        "relationship_e" => "價值關係", "relationship_i" => "價值關係", "dividend" => "資源整合", "depreciation" => "銷貨成本", "AR" => "非決策", "AP" => "非決策", "treasury" => "資源整合"); //決策類別對照
+    $catalog = array("current_people" => "團隊學習", "share" => "謀略與關係", "share2" => "謀略與關係", "donate" => "謀略與關係",
+        "ad_a" => "市場聚焦", "ad_b" => "市場聚焦", "purchase_materials" => "謀略與關係", "purchase_machine" => "投入與合一", "sell_machine" => "投入與合一", 
+        "product_a" => "謀略與關係", "product_b" => "謀略與關係", "process_improvement" => "謀略與關係", "product_plan" => "謀略與關係",
+        "r_d" => "投入與合一", "training" => "團隊學習", "long" => "投入與合一", "short" => "投入與合一", "repay" => "投入與合一", "repay2" => "投入與合一", "storage" => "非決策", 
+        "start_cash" => "非決策", "break_contract" => "投入與合一", "interest" => "非決策", "cash_increase" => "投入與合一", "relationship_s" => "謀略與關係", 
+        "relationship_e" => "謀略與關係", "relationship_i" => "謀略與關係", "dividend" => "投入與合一", "depreciation" => "銷貨成本", "AR" => "非決策", "AP" => "非決策", "treasury" => "投入與合一"); //決策類別對照
     $connect = mysql_connect("localhost", "root", "53g4ek7abc") or die(mysql_error());
     mysql_select_db("testabc_main", $connect);
     mysql_query("set names 'utf8'");

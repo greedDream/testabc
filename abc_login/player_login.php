@@ -189,6 +189,7 @@ function adminlogin(xml){
 			<div id="cd_container" class="cd_container">		
 				<div class="cd_album cd_album_1" data-bgimg="./thumbs/1.jpg">
 		    </div>
+			
         </div>
 
 <!--login form -->

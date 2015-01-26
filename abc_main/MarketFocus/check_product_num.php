@@ -99,7 +99,7 @@
         foreach($args as $arr){
             $result=explode('@',$arr);
             $order_no=$result['1'];
-            $type=split("_",$order_no);
+            $type=explode("_",$order_no);
             $num=$result['7'];
             $quality=$correspond[$result['2']];
 			
@@ -135,14 +135,22 @@
 			$total=mysql_fetch_array($temp_result);
             //$checkqqqq= parseInt($quality);
 			
+			
+			
             $checkqu=$total[0];
             $checkse=$total[1];
+			$minrank = mysql_query ("SELECT MIN(rank) FROM `product_quality` WHERE `cid`='$cid'");
+			$minrk = mysql_fetch_array($minrank);
+			$rkmin = $minrk[0];
 			
 			if($checkqu<$quality)
             {
             	$string.="請確定是否訂單是否有符合品質需求";
             }	
-			
+			elseif($quality<$rkmin)
+			{
+				$string.="請確定公司產品是否是否有符合品質需求";
+			}
 			break;
 			}
 			else
@@ -175,12 +183,19 @@
             $checkqu=$total[0];
             $checkse=$total[1];
 			
+			$minrank = mysql_query ("SELECT MIN(rank) FROM `product_quality` WHERE `cid`='$cid'");
+			$minrk = mysql_fetch_array($minrank);
+			$rkmin = $minrk[0];
+			
 			if($checkqu<$quality)
             {
 			if($string!="請確定是否訂單是否有符合品質需求")
             	$string.="請確定是否訂單是否有符合品質需求";
             }	
-			
+			elseif($quality<$rkmin)
+			{
+				$string.="請確定公司產品是否是否有符合品質需求";
+			}
 			break;
 			}
 			else

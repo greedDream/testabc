@@ -116,13 +116,45 @@ $(function(){
 	<script type="text/javascript" src="js/fisheye-iutil.min.js"></script>
 	<script type="text/javascript" src="js/dock-example1.js"></script>
 	<script type="text/javascript" src="js/jquery.jqDock.min.js"></script>
+	<script type="text/javascript" src="serverDate.js"></script>
 	<script type="text/javascript">
-	  
+	  /*
 		$(function(){
 			var jqDockOpts = {align: 'left', duration: 200, labels: 'tc', size: 50, distance: 90};
 			$('#jqDock').jqDock(jqDockOpts);
 		});
 		
+		var xmlHttp;
+function srvTime(){
+	try {
+		//FF, Opera, Safari, Chrome
+		xmlHttp = new XMLHttpRequest();
+	}
+	catch (err1) {
+		//IE
+		try {
+			xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+		}
+		catch (err2) {
+			try {
+				xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+			catch (eerr3) {
+				//AJAX not supported, use CPU time.
+				alert("AJAX not supported");
+			}
+		}
+	}
+	xmlHttp.open('HEAD',window.location.href.toString(),false);
+	xmlHttp.setRequestHeader("Content-Type", "text/html");
+	xmlHttp.send('');
+	return xmlHttp.getResponseHeader("Date");
+}		
+*/
+		var st = srvTime();
+			    var serverTimeMillisGMT = Date.parse(new Date(Date.parse(st)).toUTCString());
+				var localtime = new Date().getTime();
+				var distance = localtime -serverTimeMillisGMT;
 		function clock(){
 			if('<?php echo $gamestatus; ?>' == '競賽暫停中')
 				document.getElementById("lefttime").innerHTML = "競賽暫停中";
@@ -132,10 +164,14 @@ $(function(){
 				document.getElementById("lefttime").innerHTML = "競賽未啟動";
 			else{
 				var roundEndTime=<?php echo $endtime; ?>;
+				//var st = srvTime();
+			    //var serverTimeMillisGMT = Date.parse(new Date(Date.parse(st)).toUTCString());
+				//var localtime = new Date().getTime();
+				//var distance = localtime -serverTimeMillisGMT;
 				//此回合剩餘秒數
-				var TimeLeft=(roundEndTime*1000-(new Date().getTime()))/1000;
-				if(TimeLeft>0){
-
+				//var TimeLeft=(roundEndTime*1000-(serverTimeMillisGMT))/1000;
+				var TimeLeft=(roundEndTime*1000-(new Date().getTime())+distance)/1000;
+				if(TimeLeft>0){			
 			var hour = Math.floor((TimeLeft/3600));
 			document.getElementById("lefttime").innerHTML = hour + ' 時  \t'+ Math.floor((TimeLeft%3600)/60)+' 分  \t'+' '+Math.floor(TimeLeft%60)+' 秒';
 			setTimeout("clock()",1000);
@@ -510,9 +546,8 @@ $(function(){
 <div id="header2">
 <ul id="webmenu" class="first-menu"><!--check_authority(第幾號決策,同決策包含兩頁)-->
  <li style="width:9.5%"><a style="color:#ff6; background:none; border:none; font-size:13px;" target="_self"><strong><?php echo "&nbsp;&nbsp; 第 ".$year." 年 &nbsp;&nbsp;".$month."月";?></strong></a></li>
- <li><a href="#" class="arrow" target="_self">公司治理</a>
+ <li><a href="#" class="arrow" target="_self">願景與章程</a>
 	<ul id="subMgm" class="second-menu">
-    	<li><a href="#" onclick="document.getElementById('contentiframe').src='./CompanyGovern/organization2.php'" target="_self">組織架構與決策分配</a></li>
     	<li><a href="#" onclick="document.getElementById('contentiframe').src='./CompanyGovern/kpi2.php'" target="_self">KPI關鍵績效指標</a></li>
         <li><a href="#" class="arrow">預算</a><!--所有人都能看   沒設計權限門檻-->
             <ul class="third-menu">
@@ -521,23 +556,25 @@ $(function(){
             <li><a href="#" onclick="document.getElementById('contentiframe').src='./CompanyGovern/Budget_income.php'">預算報表</a></li>
             </ul>
         </li>
-   	</ul>
- </li>  
- <li><a href="#" target="_self">價值創造</a>
-    <ul id="subMgm" class="second-menu">
-    	<li><a href="#" class="arrow">獲利模式</a>
+            	<li><a href="#" class="arrow">獲利模式</a>
         	<ul class="third-menu">
       	 	<li><a href="#" onclick="check_authority(1,0)">銷貨成本分析</a></li>
      	   	<li><a href="#" onclick="check_authority(2,0)">營收來源</a> </li>
     		</ul>
   		</li>
+   	</ul>
+ </li>  
+ <li><a href="#" target="_self">知識與架構</a>
+    <ul id="subMgm" class="second-menu">
+    <li><a href="#" onclick="document.getElementById('contentiframe').src='./CompanyGovern/organization2.php'" target="_self">組織架構與決策分配</a></li>
+
     	<!--<li><a href="#" onclick="check_authority(1,0)" target="_self">資本結構</a></li>-->
    	</ul>
  </li> 
- <li><a href="#" class="arrow" target="_self">資源整合</a>
+ <li><a href="#" class="arrow" target="_self">投入與合一</a>
     <ul id="subMgm" class="second-menu">
     	<li><a href="#" onclick="check_authority(3,0)" >資金募集</a></li>
-      	<li><a href="#" onclick="check_authority(4,0)">研究 / 開發</a></li>
+      	<li><a href="#" onclick="check_authority(11,0)">招 / 解聘員工</a></li>
       	<li><a href="#" class="arrow" target="_self">資產購置 / 處分</a>
         	<ul class="third-menu">
           	<li><a href="#" onclick="check_authority(5,0)">購買資產</a></li>
@@ -547,41 +584,43 @@ $(function(){
       	<li><a href="#" onclick="check_authority(7,0)">購買 / 分配原料</a></li>
     </ul>
  </li> 
- <li><a href="#" class="arrow" target="_self">價值作業</a>
+ <li><a href="#" class="arrow" target="_self">革新與堅持</a>
     <ul id="subMgm" class="second-menu">
 		<li><a href="#" onclick="check_authority(8,0)">流程改良</a></li>
-        
-        <li><a href="#" onclick="check_authority(10,0)">生產規劃</a></li>
+        <li><a href="#" onclick="check_authority(4,0)">研究 / 開發</a></li>
+        <li><a href="#" onclick="check_authority(9,0)">產品功能</a></li>
     </ul>
  </li> 
- <li><a href="#" class="arrow" target="_self">團隊學習</a>
+ <li><a href="#" class="arrow" target="_self">流程與傳習</a>
     <ul id="subMgm" class="second-menu">
-      	<li><a href="#" onclick="check_authority(11,0)">招 / 解聘員工</a></li>
+      	<li><a href="#" onclick="check_authority(10,0)">生產規劃</a></li>
         <li><a href="#" onclick="check_authority(12,0)">在職訓練</a></li>
         <li><a href="#" onclick="check_authority(13,0)">人員效率評估</a></li> 
     </ul>
  </li>
- <li><a href="#" class="arrow" target="_self">市場聚焦</a>
+ <li><a href="#" class="arrow" target="_self">產出與服務</a>
     <ul id="subMgm" class="second-menu">
-      	<li><a href="#"  onclick="check_authority(14,0)">廣告促銷</a></li>
-		<li><a href="#" onclick="check_authority(9,0)">產品功能</a></li>
+      	
+		
       	<li><a href="#" onclick="check_authority(15,0)">接單</a></li>
       	<!--<li><a href="#" onclick="check_authority(16,0)">通路商</a></li>-->
- 	  	<li><a href="#" class="arrow" target="_self">市場狀態</a>
+		<li><a href="#" onclick="check_authority(18,0)">顧客訂單量</a></li>
+        <li><a href="#" onclick="check_authority(19,0)">售後顧客滿意度</a></li>
+    </ul>
+ </li>
+ <li><a href="#" target="_self">使命與承諾</a>
+    <ul id="subMgm" class="second-menu">
+    	<li><a href="#"  onclick="check_authority(14,0)">廣告促銷</a></li>
+    	 	  	<li><a href="#" class="arrow" target="_self">市場狀態</a>
         	<ul class="third-menu">
           	<li><a href="#" onclick="check_authority(17,1)">市場占有率</a></li>
           	<li><a href="#" onclick="check_authority(17,2)">市場需求變化</a></li>
         	</ul>
 	 	</li>
+      	
     </ul>
  </li>
- <li><a href="#" target="_self">價值主張</a>
-    <ul id="subMgm" class="second-menu">
-      	<li><a href="#" onclick="check_authority(18,0)">顧客訂單量</a></li>
-        <li><a href="#" onclick="check_authority(19,0)">售後顧客滿意度</a></li>
-    </ul>
- </li>
- <li><a href="#" class="arrow" target="_self">價值關係</a>
+ <li><a href="#" class="arrow" target="_self">謀略與關係</a>
     <ul style="display: none;" id="subMgm" class="second-menu">
     
         <li><a href="#" class="arrow" target="_self">關係管理</a>

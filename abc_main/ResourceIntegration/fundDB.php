@@ -58,7 +58,6 @@ if (!strcmp($_GET['type'], "set")) {
 	$outstock = mysql_query("SELECT `outside_stock` FROM `stock` WHERE `cid`='$cid' AND `year`=$year And `month`=$month");
 	$row0 =  mysql_fetch_array($outstock);
 
-
 	
     $result = mysql_query("SELECT * FROM `fund_raising` WHERE `cid`='$cid' AND `year`='$year' AND `month`='$month'");
 	
@@ -69,8 +68,10 @@ if (!strcmp($_GET['type'], "set")) {
 	$dividend = $row['dividend'];
 	$dc=$row['dividend_cost'];
     $cash_increase = $row['cash_increase'];
+    
 	$cash+=($cash_increase+$short+$long-$repay+$dc);
     $treasury = $row0[0];
+    
 	$estimate_debt = $debt_now + $long + $short - $repay;
     $equity = 0;
 	if($month_now == 1){
@@ -107,10 +108,12 @@ if (!strcmp($_GET['type'], "set")) {
     $stock_price = $row[0];	
     $stock_now = $row[1];	
 	
+	$result = mysql_query("SELECT SUM(`treasury`) FROM `fund_raising` WHERE `cid`='$cid'");
+	$row = mysql_fetch_array($result);
+	$treasurystock = $row[0];
 	
 	
-	
-    echo $lia_now . "|" . number_format($debt_now, 2) . "|" . number_format($stock_price, 2) . "|" . $cash_increase . "|" . $dividend . "|" . $short . "|" . $long . "|" . $repay . "|" . number_format($estimate_debt, 2) . "%|" . $stock_now . "|" . $treasury."|".$cash. "|".$test_debt;	
+    echo $lia_now . "|" . number_format($debt_now, 2) . "|" . number_format($stock_price, 2) . "|" . $cash_increase . "|" . $dividend . "|" . $short . "|" . $long . "|" . $repay . "|" . number_format($estimate_debt, 2) . "%|" . $stock_now . "|" . $treasury."|".$cash. "|".$test_debt. "|".$treasurystock;	
 	
 } 
 elseif (!strcmp($_GET['type'], "update")) {
@@ -123,8 +126,10 @@ elseif (!strcmp($_GET['type'], "update")) {
 	$outside_stock = $temp[0];
 	$dividend_cost -= $_GET['decision5'] * ($my_stock + $outside_stock);
 	//echo $_GET['decision1']."|".$_GET['decision2']."|".$_GET['decision3']."|".$_GET['decision4']."|".$_GET['decision5']."|".$_GET['decision6'].$dividend_cost;
-	
-	mysql_query("UPDATE `fund_raising` SET `short`=".$_GET['decision1'].",`long`=".$_GET['decision2'].",`repay`=".$_GET['decision3'].",`cash_increase`=".$_GET['decision4'].",`dividend`=".$_GET['decision5'].",`dividend_cost`=".$dividend_cost.",`treasury`=".$_GET['decision6']." WHERE `year`=$year AND `month`=$month AND `cid`='$cid'");
+	$treasury = $_GET['decision6']-$_GET['decision7'];
+	$outside_stock1 = $outside_stock-$treasury;
+	//mysql_query("UPDATE `stock` SET  `outside_stock`=".$outside_stock1." WHERE `year`=$year AND `month`=$month AND `cid`='$cid'");
+	mysql_query("UPDATE `fund_raising` SET `short`=".$_GET['decision1'].",`long`=".$_GET['decision2'].",`repay`=".$_GET['decision3'].",`cash_increase`=".$_GET['decision4'].",`dividend`=".$_GET['decision5'].",`dividend_cost`=".$dividend_cost.",`treasury`=".$treasury." WHERE `year`=$year AND `month`=$month AND `cid`='$cid'");
 	
 } 
 elseif (!strcmp($_GET['type'], "month")) {

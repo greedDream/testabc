@@ -25,13 +25,15 @@
     
     $equip_product_add = ($equip_level+$equip_satisfaction)*0.01+1;
     
-    if($result[0]*$equip_product_add>60)
+    if($result[0]*$equip_product_add<=50)
+        $basis=$basis;
+	elseif($result[0]*$equip_product_add<=60)
         $basis=5+$basis;
-    elseif($result[0]*$equip_product_add>70)
+    elseif($result[0]*$equip_product_add<=70)
         $basis=10+$basis;
-    elseif($result[0]*$equip_product_add>80)
+    elseif($result[0]*$equip_product_add<=80)
         $basis=15+$basis;
-    elseif($result[0]*$equip_product_add>90)
+    elseif($result[0]*$equip_product_add<=90)
         $basis=20+$basis;
     if(!strcmp($_GET['type'],"A")){
         $result=  mysql_query("SELECT * FROM `product_B` WHERE `cid`='$cid' AND `year`= $year AND `month`= $month",$connect);

@@ -32,7 +32,7 @@
 			$reply=$reply.($temp1[$arr[$i]]-$temp2[$arr[$i]]-$temp3[$arr[$i]]+$temp4[$arr[$i]]).":";
 		for($i=6;$i<9;$i++)//第二個for才跑後面C的部分
 			$reply=$reply.($temp1[$arr[$i]]-$temp2[$arr[$i]]+$temp4[$arr[$i]]).":";
-		$temp=split(":",$reply);
+		$temp=explode(":",$reply);
 		$adjust="SET `".$arr[0]."`=".$temp[0];//第一個不能加逗號
 		//$adjust1="(`cid`,`year`,`month`,`".$arr[0]."`";
 		//$adjust2="('".$cid."',".$year.",".($month+1).",".$temp[0];

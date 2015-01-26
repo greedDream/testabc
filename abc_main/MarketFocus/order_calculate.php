@@ -193,8 +193,8 @@
             if($type[1]=="A"){
             	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `donate` WHERE `cid` = '$company_name'");
             	$temp=mysql_fetch_array($result);
-            	$last_year=$temp[0]+$temp[1]+$temp[2];  //總共有幾顆星(要排除上次以計算過的)
-           		$customer_result+=1*$differentiation_A;
+            	$differentiation_A=$temp[0]+$temp[1]+$temp[2];  //總共有幾顆星(要排除上次以計算過的)
+           		$customer_result+=0.1*$differentiation_A;
             }
             else if($type[1]=="B"){   //暫時用原本的table
             	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share` WHERE `cid` = '$company_name'");
@@ -203,7 +203,7 @@
             	$result = mysql_query("SELECT SUM(decision1),SUM(decision2),SUM(decision3) FROM `share2` WHERE `cid` = '$company_name'");
             	$temp=mysql_fetch_array($result);
             	$differentiation_B+=$temp[0]+$temp[1]+$temp[2];
-            	$customer_result+=0.01*$differentiation_B;
+            	$customer_result+=0.1*$differentiation_B;
             }
 			
             mysql_query("UPDATE `customer_satisfaction` SET `satisfaction` = $customer_result WHERE `cid` = '$company_name' AND `customer`='$customer_name'",$connect);

@@ -60,7 +60,7 @@
 		if($arr['quantity'] <= 300){
 			$arr['quantity'] = 301;
 		}
-        $quantity=rand(($arr['quantity']-300)/10,($arr['quantity']+300)/10)*10;
+        $quantity=rand(($arr['quantity']-200)/10,($arr['quantity']+250)/10)*6;
 		if($quantity <= 300){
 		  $quantity=310;
 		}
@@ -84,7 +84,7 @@
 		if($arr['quantity'] <= 300){
 			$arr['quantity'] = 301;
 		}
-        $quantity=rand(($arr['quantity']-300)/10,($arr['quantity']+300)/10)*10;
+        $quantity=rand(($arr['quantity']-200)/10,($arr['quantity']+250)/10)*6;
         if($quantity <= 300){
 		  $quantity=310;
 		}

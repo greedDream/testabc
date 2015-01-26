@@ -18,7 +18,7 @@
         $index=$result['maxnum']+1;
 
     foreach($arrs as $arr){
-        $result=split("@",$arr);
+        $result=explode("@",$arr);
         $name=$result['0'];
         $order_no=$result['1'];
         $quality=$args[$result['2']];

@@ -16,6 +16,7 @@ function report($month) {
     $flag = 1;
     //$cid = "C01"; 
 	$cid = $_SESSION['cid'];
+	$order_month=$_SESSION['month'];
     include("../connMysql.php");
 	if (!@mysql_select_db("testabc_main")) die("資料庫選擇失敗!");
     mysql_query("set names 'utf8'");
@@ -58,7 +59,10 @@ $order = mysql_query("SELECT * FROM order_accept ORDER BY `index`");
                 $sum = $row['price'] * $row['quantity'];
                 echo "<td>".$sum."</td><td>詢價成功</td>";
             }
-            else
+            else if($row['month']==$order_month){
+				echo "<td>0</td><td>詢價中...</td>";
+            }
+			else
                 echo "<td>0</td><td>詢價失敗</td>";
             echo "</tr>";
             $flag++;

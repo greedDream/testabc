@@ -10,25 +10,35 @@
         <link rel="stylesheet" href="../css/tableyellow1.css"/>
         <script type="text/javascript">
            	var type="A";
-			var type="B";
+			//var type="B";
             var month=1;
             $(document).ready(function(){
                 $('#tabs').smartTab({autoProgress: false,stopOnFocus:true,transitionEffect:'slide'});
-                
+                $("#pA").click(function(){
+                   type="A";
+				   month=1;
+                   $("#s_div").load("./market_share_history.php",{'type':""+type, 'month':""+month});
+                });
+                $("#pB").click(function(){
+                    type="B";
+					month=1;
+                    $("#s_div").load("./market_share_history.php",{'type':""+type, 'month':""+month});
+                 });
 				$("#s_div").load("./market_share_history.php",{'type':"A", 'month':""+month});
                 $("#right").click(function(){
                     month+=3;
-                    $("#s_div").load("./market_share_history.php",{'type':"A", 'month':""+month});
+                    $("#s_div").load("./market_share_history.php",{'type':""+type, 'month':""+month});
                 });
                 $("#left").click(function(){
                     if(month-1 > 0)
                         month-=3;
                     else
                         alert("前面沒東西了啦~!!");
-                    $("#s_div").load("./market_share_history.php",{'type':"A", 'month':""+month});
+                    $("#s_div").load("./market_share_history.php",{'type':""+type, 'month':""+month});
 				
                 });
-				$("#s_div2").load("./market_share_history.php",{'type':"B", 'month':""+month});
+
+				/*$("#s_div2").load("./market_share_history.php",{'type':"B", 'month':""+month});
                 
 				$("#right2").click(function(){
                     month+=3;
@@ -41,7 +51,7 @@
                     else
                         alert("前面沒東西了啦~!!");
                     $("#s_div2").load("./market_share_history.php",{'type':"B", 'month':""+month});
-                });
+                });*/
             });
 						
         </script>

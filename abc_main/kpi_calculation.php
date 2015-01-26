@@ -169,7 +169,7 @@ for ($j = 0; $j < $c_length; $j++) {
     $market_share_A = 0;
     $result = mysql_query("SELECT `order_no`,`quantity`,`cid` FROM `order_accept` WHERE ((`year`=$year AND `month` <= $month) OR `year`<$year) AND `accept` = 1 ");
     while ($temp = mysql_fetch_array($result)) {
-        $order = split("_", $temp[0]);
+        $order = explode("_", $temp[0]);
         $type = $order[1];
         if ($type === "A") {
             $quantity+=$temp[1];
@@ -188,7 +188,7 @@ for ($j = 0; $j < $c_length; $j++) {
     $market_share_B = 0;
     $result = mysql_query("SELECT `order_no`,`quantity`,`cid` FROM `order_accept` WHERE ((`year`=$year AND `month` <= $month) OR `year`<$year) AND `accept` = 1 ");
     while ($temp = mysql_fetch_array($result)) {
-        $order = split("_", $temp[0]);
+        $order = explode("_", $temp[0]);
         $type = $order[1];
         if ($type === "B") {
             $quantity+=$temp[1];
@@ -209,7 +209,7 @@ for ($j = 0; $j < $c_length; $j++) {
     $price_A = 0;
     $result = mysql_query("SELECT `order_no`,`quantity`,`cid`,`price` FROM `order_accept` WHERE ((`year`=$year AND `month` <= $month) OR `year`<$year) AND `accept` = 1 ");
     while ($temp = mysql_fetch_array($result)) {
-        $order = split("_", $temp[0]);
+        $order = explode("_", $temp[0]);
         $type = $order[1];
         if ($type === "A") {
             $quantity+=$temp[1];
@@ -232,7 +232,7 @@ for ($j = 0; $j < $c_length; $j++) {
     $price_B = 0;
     $result = mysql_query("SELECT `order_no`,`quantity`,`cid`,`price` FROM `order_accept` WHERE ((`year`=$year AND `month` <= $month) OR `year`<$year) AND `accept` = 1 ");
     while ($temp = mysql_fetch_array($result)) {
-        $order = split("_", $temp[0]);
+        $order = explode("_", $temp[0]);
         $type = $order[1];
         if ($type === "B") {
             $quantity+=$temp[1];

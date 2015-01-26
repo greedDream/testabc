@@ -65,7 +65,8 @@
                 $index=$index/6+1;
                 for($i=0;$i<6;$i++){
                     mysql_query("UPDATE `customer_state` SET `valid`=1 WHERE `index`=($i*5+$index);") or die(mysql_error());
-                }
+					//mysql_query("UPDATE `customer_state` SET `valid`=1 WHERE `valid`='0';") or die(mysql_error());    
+				}
             }
         }
     }

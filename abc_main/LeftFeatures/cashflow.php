@@ -127,7 +127,7 @@ function report($name,$type,$month){
 			if($title_b['title']!="cash_balance_last"){//不是上期餘額則print出$t_sum
 				$count=0;
 				for($i=0;$i<$round;$i++)
-					if($t_sum[$i]!=0)
+					//if($t_sum[$i]!=0)
 						print_price($t_sum[$i],1,0);
 				$i=0;
 				$count+=1;

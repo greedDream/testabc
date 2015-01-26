@@ -111,6 +111,8 @@
 		
 		//%數調整
 		$EVA[$i]=($ROIC[$i]-$WACC[$i])*($IC[$i]+$last_IC[$i])/2;
+		mysql_query("UPDATE `score` SET `score1`=".$ROIC[$i]." , `score2`=".$EVA[$i]." , `score3`=".$score3[$i]." WHERE cid='".$c[$i]."' AND year='$year' AND month='$month'") or die(mysql_error());
+	
 	}
 	//新增KPI部分，資料表的account是公司名，session是回合數~~
 	$i=1;
@@ -325,91 +327,15 @@
 
 	if($_GET['nowPage']){$pages=$_GET['nowPage'];}else{$pages=1;}
 
-	$month_pages_fst = ($pages -1)*12+ 1;
-	$month_pages_lst = ($pages -1)*12+ 12;
-	$result = mysql_query("SELECT `WACC` FROM `stock` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month` = 1 ORDER BY `cid` ASC");
-	$WACC_fst = mysql_fetch_array($result);
-	$result = mysql_query("SELECT `WACC` FROM `stock` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month` = 12 ORDER BY `cid` ASC");
-	$WACC_lst = mysql_fetch_array($result);
-	
-	
-	$i=1;
-	while($company=mysql_fetch_array($C_name)){//每間公司ㄉ名稱~
-		$CN=$company['CompanyID'];
-		$result = mysql_query("SELECT SUM(price) FROM `equity` WHERE `cid` = '$CN' AND `month` = $month_pages_fst ORDER BY `cid` ASC");
-		$temp=mysql_fetch_array($result);
-		$equity_fst[$i]=$temp[0];//權益總額
-		
-		$result = mysql_query("SELECT SUM(price) FROM `equity` WHERE `cid` = '$CN' AND `month` = $month_pages_lst ORDER BY `cid` ASC");
-		$temp=mysql_fetch_array($result);
-		$equity_lst[$i]=$temp[0];//權益總額
-		
-		$i++;}	
-	$i=1;
-	/*
-	$result = mysql_query("SELECT price FROM `long-term_liabilities` WHERE `name` = '212' AND `month` = $month_for_report-1 ORDER BY `cid` ASC");
-	while($temp=mysql_fetch_array($result)){
-		$longterm[$i]+=$temp[0];//應付票據
-		$i++;}	
-	$i=1;
-	$result = mysql_query("SELECT price FROM `current_liabilities` WHERE `name` = '211' AND `month` = $month_for_report-1 ORDER BY `cid` ASC");
-	while($temp=mysql_fetch_array($result)){
-		$current[$i]+=$temp[0];//短期借款
-		$i++;
-	}
-	
-	while($company=mysql_fetch_array($C_name)){//每間公司ㄉ名稱~
-		$CN=$company['CompanyID'];
-		$result = mysql_query("SELECT SUM(price) FROM `equity` WHERE `cid` = '$CN' AND `month` = $month_for_report-2 ORDER BY `cid` ASC");
-		$temp=mysql_fetch_array($result);
-		$lastequity[$i]=$temp[0];//權益總額
-		$i++;}	
-	
-		$i=1;
-	$result = mysql_query("SELECT price FROM `long-term_liabilities` WHERE `name` = '212' AND `month` = $month_for_report-2 ORDER BY `cid` ASC");
-	while($temp=mysql_fetch_array($result)){
-		$last_longterm[$i]+=$temp[0];//上期應付票據
-		$i++;}
-		
-		$i=1;
-	$result = mysql_query("SELECT price FROM `current_liabilities` WHERE `name` = '211' AND `month` = $month_for_report-2 ORDER BY `cid` ASC");
-	while($temp=mysql_fetch_array($result)){
-		$last_current[$i]+=$temp[0];//上期短期借款
-		$i++;}
-	
-	*/
-	
 	for($i=1;$i<=$length;$i++){
 		$sql_score=mysql_query("SELECT * FROM `score` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month`=12");
 		$score = mysql_fetch_array($sql_score);
 		$result=mysql_query("SELECT	SUM(`bankrupt`) FROM `cash` WHERE `cid`='C0".$i."' AND `year`=$pages");
 		$temp = mysql_fetch_array($result);
-		
-		$score_first=mysql_query("SELECT stock_price FROM `stock` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month`=1");
-		$score_fist=mysql_query("SELECT stock_price FROM `stock` WHERE `cid`='C0".$i."' AND `year`=$pages AND `month`=12");
-		$scorefst = mysql_fetch_row($score_first);
-		$scorelst =mysql_fetch_row($score_fist);
-		$score_average[$i]= $scorelst[0]-$scorefst[0];
-		//$score_average[$i] = $equity_lst[$i] - $equity_fst[$i];
-		//$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*1000);
-		//$score_average[$i]=$score[3];
+		$score_average[$i]=2*$score[3]/5+2*$score[4]/5+$score[5]/5-($temp[0]*1000);
+		//$score_average[$i]=$score['score1']*10000;
 	}
 	
-	/*
-	for($i=1;$i<=$length;$i++){
-	{
-		$result = mysql_query("SELECT `WACC` FROM `stock` WHERE `year`=$year AND `month` = $month ORDER BY `cid` ASC");
-		$IC[$i]=$equity[$i]+$longterm[$i]+$current[$i];
-		$last_IC[$i] = $lastequity[$i]+$last_longterm[$i]+$last_current[$i];
-		$ROIC[$i] = $EBIT[$i]/(($IC[$i]+$last_IC[$i])/2);
-		//$ROIC[$i]=$lastequity[$i];
-		
-		
-		//%數調整
-		$EVA[$i]=($ROIC[$i]-$WACC[$i])*($IC[$i]+$last_IC[$i])/2;
-		
-	}
-	*/
 	$flag=0;
 	for($i=1;$i<=$length;$i++){
 		if ($flag % 2 == 1)
@@ -418,7 +344,7 @@
 		  echo "<tr height=50>";
 		  
 			//加權平均得分數
-			echo "<td>".number_format($score_average[$i],1)."</td>";
+			echo "<td>".number_format($score_average[$i],2)."</td>";
 		    
 			//競賽名次
 			for($j=1,$rank[$i]=1;$j<=$length;$j++){
@@ -444,7 +370,6 @@
 </tbody>
 </table>
 <?php
-echo "<h2 style='color:#008844;'>  目前是第.$pages.年的競賽排名<h2>";
 if ($year!=1){
 	echo "<h2 style='color:#008844;'>  ＊ 請注意：倒閉將會倒扣當年積分1000分唷!<h2>";
 	$temp=mysql_query("SELECT MAX(`year`) FROM `state`");
@@ -461,12 +386,10 @@ if ($year!=1){
 		echo '<a href="rankchange.php?nowPage='.$y.'">'.$y.'</a>'."&nbsp;";
 	}
 	echo "年";
-	
 }
 else{
 	echo "<h2 style='color:#FF0000;'>需期滿一年才能產生競賽排名! </h2>";
 	}
-	
 ?>
 </body> 
 </html>

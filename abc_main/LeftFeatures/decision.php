@@ -29,28 +29,28 @@
             <ul>
                <li>
                     <a href="#tabs-1">
-                        <font size="4">價值關係</font>
+                        <font size="4">謀略與關係</font>
                     </a>
                 </li>
                 <li>
                     <a href="#tabs-2" >  
-                        <font size="4">資源整合</font>
+                        <font size="4">投入與合一</font>
                     </a>
                 </li>
                  <li>
                     <a href="#tabs-3" >
                         
-                        <font size="4">市場聚焦</font>
+                        <font size="4">使命與承諾</font>
                     </a>
                 </li>
                 <li>
                     <a href="#tabs-4" > 
-                        <font size="4">價值作業</font>
+                        <font size="4">革新與堅持</font>
                     </a>
                 </li>
                 <li>
                     <a href="#tabs-5" >
-                        <font size="4">團隊學習</font>
+                        <font size="4">流程與傳習</font>
                     </a>
                 </li>
             </ul>
