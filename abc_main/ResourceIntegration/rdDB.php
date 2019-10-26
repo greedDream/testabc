@@ -28,48 +28,48 @@ if (isset($_GET['product'])) {
 
         //原料(1:panel/2:CPU/3:keyboard)_供應商(A/B/C)
         if ($_GET['p_A'] && $_GET['price_pA']) {
-            $pnum = $_GET['p_A'];
-            $per_price = $_GET['price_pA'];
+            $pnum = mysql_real_escape_string($_GET['p_A']);
+            $per_price = mysql_real_escape_string($_GET['price_pA']);
             mysql_query("INSERT INTO `supplier_a` VALUES ('$cid','A',1,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['c_A'] && $_GET['price_cA']) {
-            $pnum = $_GET['c_A'];
-            $per_price = $_GET['price_cA'];
+            $pnum = mysql_real_escape_string($_GET['c_A']);
+            $per_price = mysql_real_escape_string($_GET['price_cA']);
             mysql_query("INSERT INTO `supplier_a` VALUES ('$cid','A',2,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['k_A'] && $_GET['price_kA']) {
-            $pnum = $_GET['k_A'];
-            $per_price = $_GET['price_kA'];
+            $pnum = mysql_real_escape_string($_GET['k_A']);
+            $per_price = mysql_real_escape_string($_GET['price_kA']);
             mysql_query("INSERT INTO `supplier_a` VALUES ('$cid','A',3,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['p_B'] && $_GET['price_pB']) {
-            $pnum = $_GET['p_B'];
-            $per_price = $_GET['price_pB'];
+            $pnum = mysql_real_escape_string($_GET['p_B']);
+            $per_price = mysql_real_escape_string($_GET['price_pB']);
             mysql_query("INSERT INTO `supplier_b` VALUES ('$cid','A',1,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['c_B'] && $_GET['price_cB']) {
-            $pnum = $_GET['c_B'];
-            $per_price = $_GET['price_cB'];
+            $pnum = mysql_real_escape_string($_GET['c_B']);
+            $per_price = mysql_real_escape_string($_GET['price_cB']);
             mysql_query("INSERT INTO `supplier_b` VALUES ('$cid','A',2,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['k_B'] && $_GET['price_kB']) {
-            $pnum = $_GET['k_B'];
-            $per_price = $_GET['price_kB'];
+            $pnum = mysql_real_escape_string($_GET['k_B']);
+            $per_price = mysql_real_escape_string($_GET['price_kB']);
             mysql_query("INSERT INTO `supplier_b` VALUES ('$cid','A',3,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['p_C'] && $_GET['price_pC']) {
-            $pnum = $_GET['p_C'];
-            $per_price = $_GET['price_pC'];
+            $pnum = mysql_real_escape_string($_GET['p_C']);
+            $per_price = mysql_real_escape_string($_GET['price_pC']);
             mysql_query("INSERT INTO `supplier_c` VALUES ('$cid','A',1,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['c_C'] && $_GET['price_cC']) {
-            $pnum = $_GET['c_C'];
-            $per_price = $_GET['price_cC'];
+            $pnum = mysql_real_escape_string($_GET['c_C']);
+            $per_price = mysql_real_escape_string($_GET['price_cC']);
             mysql_query("INSERT INTO `supplier_c` VALUES ('$cid','A',2,$year,$month,$per_price,$pnum,0);");
         }
         if ($_GET['k_C'] && $_GET['price_kC']) {
-            $pnum = $_GET['k_C'];
-            $per_price = $_GET['price_kC'];
+            $pnum = mysql_real_escape_string($_GET['k_C']);
+            $per_price = mysql_real_escape_string($_GET['price_kC']);
             mysql_query("INSERT INTO `supplier_c` VALUES ('$cid','A',3,$year,$month,$per_price,$pnum,0);");
         }
 
