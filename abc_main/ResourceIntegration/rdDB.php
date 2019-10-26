@@ -1,5 +1,5 @@
-<?php session_start();?>
 <?php
+    session_start();
     include("../connMysql.php");
 	if (!@mysql_select_db("testabc_main")) die("資料庫選擇失敗!");
 	mysql_query("set names 'utf8'");
